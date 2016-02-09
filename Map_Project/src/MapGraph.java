@@ -1,7 +1,5 @@
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Set;
 public class MapGraph {
 
 	// roads
-	private HashMap<String, ArrayList<Road>> roads;
+	private HashMap<String, RoadList<RoadSegment>> roads;
 
 	// look-up table (hash map)
 	private HashMap<String, MapNode> nodeTable;
@@ -24,8 +22,8 @@ public class MapGraph {
 	 * 
 	 */
 	public MapGraph() {
-		HashMap<String, Road> the = new HashMap<String, Road>();
-		this.roads = new HashMap<String, ArrayList<Road>>();
+		HashMap<String, RoadSegment> the = new HashMap<String, RoadSegment>();
+		this.roads = new HashMap<String, RoadList<RoadSegment>>();
 		this.nodeTable = new HashMap<String, MapNode>();
 	}
 
@@ -34,13 +32,15 @@ public class MapGraph {
 	 * 
 	 * @return true if a road is successfully added, false otherwise
 	 */
-	public boolean addRoad(String newRoadName, Point2D startpoint, Point2D endpoint) {
+	public boolean addRoad(String newRoadName, Point2D startpoint,
+			Point2D endpoint) {
 		if (this.roads.containsKey(newRoadName))
 			return false;
 
 		// make an entry in the table for the new road
-		ArrayList<Road> stub = new ArrayList<Road>();
-		stub.add(new Road(startpoint, startpoint));
+		RoadList<RoadSegment> stub = new RoadList<RoadSegment>();
+		stub.changeName(newRoadName);
+		stub.add(new RoadSegment(startpoint, startpoint));
 		this.roads.put(newRoadName, stub);
 
 		// intersections handling
@@ -54,22 +54,38 @@ public class MapGraph {
 					intersect = MapGraph.intersection(startpoint, endpoint,
 							this.roads.get(name).get(i).ends[0], this.roads
 									.get(name).get(i).ends[1]);
-					if(intersect!=null){
-						//add an intersection object to the intersections HashMap
-						//add a new segment to this.roads.get(roadName) (new road)
-						//split this.roads.get(name).get(i) (the existing road segment)
-						//build the graph...
-						//update lastEndpoint
+					if (intersect != null) {
+						// add an intersection object to the intersections
+						// HashMap
+						// //make sure to point the intersection to the correct
+						// roads
+
+						// use road names to define keys for nodes
+						String intersectionKeyName = name
+								.compareTo(newRoadName) > 0 ? (name + newRoadName)
+								: (newRoadName + name);
+						this.nodeTable.put(intersectionKeyName,new Intersection(intersectionKeyName));
+
+						// add a new segment to this.roads.get(newRoadName) (new
+						// road)
+						RoadSegment new_trailing = new RoadSegment(
+								lastEndpoint, intersect);
+						this.roads.get(newRoadName).add(new_trailing);
+						// split this.roads.get(name).get(i) (the existing road
+						// segment)
+
+						// update lastEndpoint
+						lastEndpoint = intersect;
 					}
 				}
-
 			}
 		}
 
 		return false;
 	}
 
-	private static Point2D intersection(Point2D startpoint, Point2D endpoint, Point2D ends, Point2D ends2) {
+	private static Point2D intersection(Point2D startpoint, Point2D endpoint,
+			Point2D ends, Point2D ends2) {
 		return null;
 	}
 

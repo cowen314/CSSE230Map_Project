@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 
 /**
@@ -19,11 +20,23 @@ public abstract class MapNode {
 	 */
 	protected String lookupName;
 	
+	protected LinkedList<RoadSegment> neighborRoads;
+	
 	//this will be the icon displayed on the map
-	private BufferedImage icon;
+	protected BufferedImage icon;
 	
 	public MapNode(String name){
 		this.lookupName = name;
+		this.neighborRoads = new LinkedList<RoadSegment>();
+	}
+	
+	public MapNode(String name,RoadSegment rs1,RoadSegment rs2,RoadSegment rs3,RoadSegment rs4){
+		this.lookupName = name;
+		this.neighborRoads = new LinkedList<RoadSegment>();
+		this.neighborRoads.addLast(rs1);
+		this.neighborRoads.addLast(rs2);
+		this.neighborRoads.addLast(rs3);
+		this.neighborRoads.addLast(rs4);
 	}
 	
 	
