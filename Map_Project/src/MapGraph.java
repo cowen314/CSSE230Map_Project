@@ -45,6 +45,8 @@ public class MapGraph {
 
 		// intersections handling
 		Point2D lastEndpoint = startpoint;
+		Intersection lastIntersection = null;
+		RoadSegment trailingRoad = stub.get(0);
 		Point2D intersect;
 		Set<String> roadNames = this.roads.keySet();
 		for (String name : roadNames) {
@@ -68,14 +70,17 @@ public class MapGraph {
 
 						// add a new segment to this.roads.get(newRoadName) (new
 						// road)
-						RoadSegment new_trailing = new RoadSegment(
+						trailingRoad = new RoadSegment(
 								lastEndpoint, intersect);
-						this.roads.get(newRoadName).add(new_trailing);
+						
+						trailingRoad.intersects[0] = lastIntersection;
+						trailingRoad.intersects[1] = this.nodeTable.get(intersectionKeyName);
+						this.roads.get(newRoadName).add(trailingRoad);
 						// split this.roads.get(name).get(i) (the existing road
 						// segment)
 
-						// update lastEndpoint
 						lastEndpoint = intersect;
+						lastIntersection = (Intersection) this.nodeTable.get(intersectionKeyName);
 					}
 				}
 			}
