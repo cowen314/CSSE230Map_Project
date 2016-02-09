@@ -8,9 +8,10 @@ import java.awt.geom.Point2D;
  *         Created Feb 8, 2016.
  */
 public class Road {
-	//TODO: implement iterable
-	public Road(Point2D endpoint1, Point2D endpoint12){
-		//TODO
+	Point2D[] ends;
+	public Road(Point2D startpoint, Point2D endpoint){
+		this.ends[0] = startpoint;
+		this.ends[1] = endpoint;
 	}
 
 }
