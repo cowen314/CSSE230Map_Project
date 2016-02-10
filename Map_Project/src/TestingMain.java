@@ -1,5 +1,9 @@
+import java.awt.geom.Point2D;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+
+import math.geom2d.Vector2D;
 
 
 /**
@@ -23,7 +27,12 @@ public class TestingMain {
 		MapGraph mapGraph = new MapGraph();
 		MapComponent mapComp = new MapComponent(mapGraph);
 		frame.add(mapComp);
-		
+		mapGraph.addRoad("Test drive",new Point2D.Double(10,10),new Point2D.Double(200,200));
+		//mapGraph.addRoad()
+		/*		while(true){
+		mapComp.repaint();
+		}*/
+		Vector2D testVector = new Vector2D();
 	}
 
 }

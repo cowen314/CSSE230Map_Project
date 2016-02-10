@@ -146,13 +146,16 @@ public class MapGraph {
 	public boolean containsNode(MapNode c) {
 		return false;
 	}
+	
+	public Collection<Intersection> getIntersections(){
+		return this.intersectionTable.values();
+	}
 
 	/**
 	 * @return a collection of all roads
 	 */
 	public Collection<RoadList> getRoads() {
-		Collection<RoadList> roads = this.roadsTable.values();
-		return roads;
+		return this.roadsTable.values();
 	}
 
 }

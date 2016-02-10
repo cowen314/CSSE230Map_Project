@@ -1,6 +1,8 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -33,12 +35,18 @@ public class MapComponent extends JComponent{
 		}
 		
 		//pull in all intersections
+		Collection<Intersection> intersections = this.mapGraph.getIntersections();
 		//draw them
 	}
 	
 	private void drawRoad(Graphics2D g2, RoadList road){
-		//Line2D line = new Line2D.Double(road.get(0).ends[0],road.get().ends[1]);
-		
+		//this definitely needs to be changed if we want any bends in the roads
+		Point2D[] endpoints = road.getEndPoints();
+		Line2D line = new Line2D.Double(endpoints[0],endpoints[1]);
+		g2.setColor(Color.black);
+		g2.draw(line);
+		Line2D line2 = new Line2D.Double(new Point2D.Double(10,10),new Point2D.Double(100,100));
+		//line2.
 	}
 	
 }
