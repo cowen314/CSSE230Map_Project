@@ -1,5 +1,7 @@
 import java.awt.geom.Point2D;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Set;
 public class MapGraph {
 
 	// roads
-	private HashMap<String, RoadList<RoadSegment>> roads;
+	private HashMap<String, RoadList> roadsTable;
 
 	// look-up table (hash map)
 	private HashMap<String, Intersection> intersectionTable;
@@ -22,7 +24,7 @@ public class MapGraph {
 	 * 
 	 */
 	public MapGraph() {
-		this.roads = new HashMap<String, RoadList<RoadSegment>>();
+		this.roadsTable = new HashMap<String, RoadList>();
 		this.intersectionTable = new HashMap<String, Intersection>();
 	}
 
@@ -33,11 +35,11 @@ public class MapGraph {
 	 */
 	public boolean addRoad(String newRoadName, Point2D startpoint,
 			Point2D endpoint) {
-		if (this.roads.containsKey(newRoadName))
+		if (this.roadsTable.containsKey(newRoadName))
 			return false;
 
 		// make an entry in the table for the new road
-		RoadList<RoadSegment> newRoad = new RoadList<RoadSegment>();
+		RoadList newRoad = new RoadList();
 		newRoad.changeName(newRoadName);
 
 		// intersections handling
@@ -45,7 +47,7 @@ public class MapGraph {
 		Intersection lastIntersection = null;
 		RoadSegment trailingSegment = null;
 		Point2D intersectLoc;
-		Set<String> roadNames = this.roads.keySet();
+		Set<String> roadNames = this.roadsTable.keySet();
 		/*
 		 * iterate over all road segments, checking for points at which the
 		 * roads cross over. At these crossover points, an intersection is
@@ -54,9 +56,9 @@ public class MapGraph {
 		for (String name : roadNames) {
 			if (name != newRoadName) {
 				// check for intersection
-				for (int i = 0; i < this.roads.get(name).size(); i++) {
+				for (int i = 0; i < this.roadsTable.get(name).size(); i++) {
 					intersectLoc = MapGraph.intersection(startpoint, endpoint,
-							this.roads.get(name).get(i).ends[0], this.roads
+							this.roadsTable.get(name).get(i).ends[0], this.roadsTable
 									.get(name).get(i).ends[1]);
 					if (intersectLoc != null) {
 						// add an intersection object to the intersections
@@ -82,7 +84,7 @@ public class MapGraph {
 
 						// split this.roads.get(name).get(i) (the existing road
 						// segment)
-						RoadSegment toSplit = this.roads.get(name).get(i);
+						RoadSegment toSplit = this.roadsTable.get(name).get(i);
 						RoadSegment newPortion = new RoadSegment(intersectLoc,
 								toSplit.ends[1]);
 						newPortion.intersects[0] = curIntersection;
@@ -91,7 +93,7 @@ public class MapGraph {
 						toSplit.intersects[1] = curIntersection;
 						// TODO: the nature of this insertion makes me think a
 						// LinkedList would be better underpinning of RoadList
-						this.roads.get(name).add(i + 1, newPortion);
+						this.roadsTable.get(name).add(i + 1, newPortion);
 
 						// update info for the last intersection
 						lastEndpoint = intersectLoc;
@@ -110,7 +112,7 @@ public class MapGraph {
 		newRoad.add(lastSegment);
 
 		// and finally, put the new road in the roads HashMap
-		this.roads.put(newRoadName, newRoad);
+		this.roadsTable.put(newRoadName, newRoad);
 		return true;
 	}
 
@@ -143,6 +145,14 @@ public class MapGraph {
 	 */
 	public boolean containsNode(MapNode c) {
 		return false;
+	}
+
+	/**
+	 * @return a collection of all roads
+	 */
+	public Collection<RoadList> getRoads() {
+		Collection<RoadList> roads = this.roadsTable.values();
+		return roads;
 	}
 
 }
