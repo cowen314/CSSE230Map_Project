@@ -22,7 +22,6 @@ public class MapGraph {
 	 * 
 	 */
 	public MapGraph() {
-		HashMap<String, RoadSegment> the = new HashMap<String, RoadSegment>();
 		this.roads = new HashMap<String, RoadList<RoadSegment>>();
 		this.nodeTable = new HashMap<String, MapNode>();
 	}
