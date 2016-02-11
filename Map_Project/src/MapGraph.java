@@ -18,8 +18,11 @@ public class MapGraph {
 	// roads
 	private HashMap<String, RoadList> roadsTable;
 
-	// look-up table (hash map)
+	// intersections
 	private HashMap<String, Intersection> intersectionTable;
+
+	// restaurants
+	private HashMap<String, Restaurant> restaurantsTable;
 
 	/**
 	 * Constructs a MapGraph
@@ -28,6 +31,7 @@ public class MapGraph {
 	public MapGraph() {
 		this.roadsTable = new HashMap<String, RoadList>();
 		this.intersectionTable = new HashMap<String, Intersection>();
+		this.restaurantsTable = new HashMap<String, Restaurant>();
 	}
 
 	/**
@@ -37,11 +41,10 @@ public class MapGraph {
 	 */
 	public boolean addRoad(String newRoadName, Point2D startpoint,
 			Point2D endpoint) {
-		if (this.roadsTable.containsKey(newRoadName)){
+		if (this.roadsTable.containsKey(newRoadName)) {
 			System.out.println("Attempted to add duplicate road");
 			return false;
 		}
-			
 
 		// make an entry in the table for the new road
 		RoadList newRoad = new RoadList();
@@ -70,13 +73,13 @@ public class MapGraph {
 						// HashMap
 						// //make sure to point the intersection to the correct
 						// roads
-						
+
 						// use road names to define keys for nodes
 						String intersectionKeyName = name
 								.compareTo(newRoadName) > 0 ? (name + newRoadName)
 								: (newRoadName + name);
 						Intersection curIntersection = new Intersection(
-								intersectionKeyName,intersectLoc);
+								intersectionKeyName, intersectLoc);
 						this.intersectionTable.put(intersectionKeyName,
 								curIntersection);
 
@@ -126,6 +129,7 @@ public class MapGraph {
 	 * implementation of intersection() is based on:
 	 * http://stackoverflow.com/questions
 	 * /563198/how-do-you-detect-where-two-line-segments-intersect
+	 * 
 	 * @param startpoint_road1
 	 * @param endpoint_road1
 	 * @param startpoint_road2
@@ -156,7 +160,7 @@ public class MapGraph {
 			return null;
 		}
 		double u = q_minus_p_cross_r / r_cross_s;
-		double t = (q.minus(p)).cross(s)/(r.cross(s));
+		double t = (q.minus(p)).cross(s) / (r.cross(s));
 		if (u <= 1 && u >= 0 && t <= 1 && t >= 0) {
 			Vector2D intersection = p.plus((r.times(t)));
 			return new Point2D.Double(intersection.getX(), intersection.getY());
@@ -169,11 +173,53 @@ public class MapGraph {
 	 * Adds a restaurant to the specified intersection location TODO: consider
 	 * adding location parameters to this
 	 * 
+	 * Garrett is right about this; it would be better to calculate the closest
+	 * intersection on the fly rather than having to specify it ahead of time.
+	 * So, that's what we'll do.
+	 * 
+	 * @param restaurant
+	 * 
 	 * @param intersectionName
 	 * @return true if the restaurant is successfully added, false otherwise
 	 */
-	public boolean addRestaurant(String intersectionName) {
-		return false;
+	public boolean addRestaurant(String name, Point2D location,
+			String streetAddress) {
+		// check the input
+		if (this.restaurantsTable.containsKey(name))
+			return false;
+		Intersection closestIntersection = calculateClosestIntersection(location);
+		if (closestIntersection == null)
+			return false;
+		Restaurant newRes = new Restaurant(name, location, closestIntersection,
+				streetAddress);
+		// add the restaurant to the restaurant table, and the specified
+		// intersection
+		this.restaurantsTable.put(name, newRes);
+		closestIntersection.addRestaurant(newRes);
+
+		return true;
+	}
+
+	/**
+	 * calculates the closest intersection to "location"
+	 * 
+	 * @param location
+	 * @return the closest intersection
+	 */
+	private Intersection calculateClosestIntersection(Point2D location) {
+		Collection<Intersection> allIntersections = this.intersectionTable
+				.values();
+		double minDistance = -1;
+		double distance;
+		Intersection closestIntersection = null;
+		for (Intersection intersection : allIntersections) {
+			distance = intersection.getLocation().distance(location);
+			if (minDistance == -1 || distance < minDistance) {
+				minDistance = distance;
+				closestIntersection = intersection;
+			}
+		}
+		return closestIntersection;
 	}
 
 	/**
@@ -201,6 +247,14 @@ public class MapGraph {
 	 */
 	public Collection<RoadList> getRoads() {
 		return this.roadsTable.values();
+	}
+	
+	/**
+	 *
+	 * @return a collection of all restaurants
+	 */
+	public Collection<Restaurant> getRestaurants() {
+		return this.restaurantsTable.values();
 	}
 
 }

@@ -9,6 +9,10 @@ import java.awt.geom.Point2D;
  */
 public class RoadSegment {
 	
+	//TODO: give the ability to set the speed limit
+	private int speedLimit;
+	private final int DEFAULT_SPEEDLIMIT = 35;
+	
 	/**
 	 * the endpoint locations of the road segment
 	 */
@@ -27,6 +31,25 @@ public class RoadSegment {
 		this.intersects = new MapNode[2];
 		this.intersects[0] = null;
 		this.intersects[1] = null;
+		this.speedLimit = this.DEFAULT_SPEEDLIMIT;
+	}
+
+
+	/**
+	 * Returns the value of the field called 'speedLimit'.
+	 * @return Returns the speedLimit.
+	 */
+	public int getSpeedLimit() {
+		return speedLimit;
+	}
+
+
+	/**
+	 * Sets the field called 'speedLimit' to the given value.
+	 * @param speedLimit The speedLimit to set.
+	 */
+	public void setSpeedLimit(int speedLimit) {
+		this.speedLimit = speedLimit;
 	}
 
 }

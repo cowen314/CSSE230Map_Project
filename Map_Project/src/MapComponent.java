@@ -5,7 +5,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Ellipse2D;
 import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.swing.JComponent;
 
@@ -45,17 +44,14 @@ public class MapComponent extends JComponent {
 		for (Intersection intersection : intersections) {
 			drawIntersection(g2, intersection);
 		}
+		
+		// pull in all intersections
+		Collection<Restaurant> restaurants = this.mapGraph.getRestaurants();
+		// draw them
+		for (Restaurant restaurant : restaurants) {
+			drawRestaurant(g2, restaurant);
+		}
 	}
-
-	private void drawIntersection(Graphics2D g2, Intersection intersection) {
-		Point2D loc = intersection.getLocation();
-		Ellipse2D marker = new Ellipse2D.Double(loc.getX()
-				- Intersection.DIAMETER / 2, loc.getY() - Intersection.DIAMETER
-				/ 2, Intersection.DIAMETER, Intersection.DIAMETER);
-		g2.setColor(Intersection.color);
-		g2.fill(marker);
-	}
-
 	private void drawRoad(Graphics2D g2, RoadList road) {
 		// this definitely needs to be changed if we want any bends in the roads
 		Point2D[] endpoints = road.getEndPoints();
@@ -64,5 +60,26 @@ public class MapComponent extends JComponent {
 		g2.draw(line);
 		// line2.
 	}
+	
+	private void drawIntersection(Graphics2D g2, Intersection intersection) {
+		Point2D loc = intersection.getLocation();
+		Ellipse2D marker = new Ellipse2D.Double(loc.getX()
+				- Intersection.DIAMETER / 2, loc.getY() - Intersection.DIAMETER
+				/ 2, Intersection.DIAMETER, Intersection.DIAMETER);
+		g2.setColor(Intersection.color);
+		g2.fill(marker);
+		g2.draw(marker);
+	}
+	
+	private void drawRestaurant(Graphics2D g2, Restaurant restaurant) {
+		Point2D loc = restaurant.getLocation();
+		Ellipse2D marker = new Ellipse2D.Double(loc.getX()
+				- Restaurant.DIAMETER / 2, loc.getY() - Restaurant.DIAMETER
+				/ 2, Restaurant.DIAMETER, Restaurant.DIAMETER);
+		g2.setColor(Restaurant.color);
+		g2.fill(marker);
+		g2.draw(marker);
+	}
+	
 
 }

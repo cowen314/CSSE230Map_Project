@@ -24,6 +24,8 @@ public class TestingMain {
 		frame.setVisible(true);
 		MapGraph mapGraph = new MapGraph();
 		MapComponent mapComp = new MapComponent(mapGraph);
+		mapComp.setSize(500,500);
+		mapComp.setVisible(true);
 		frame.add(mapComp);
 		mapGraph.addRoad("Test drive", new Point2D.Double(50, 0),
 				new Point2D.Double(50, 400));
@@ -32,9 +34,9 @@ public class TestingMain {
 		mapGraph.addRoad("slanted road", new Point2D.Double(300, 0),
 				new Point2D.Double(0, 400));
 		// be sure to test three way intersection
-		// for some reason, putting "mapComp.repaint()" at the end of the code
-		// made the roads not draw sometimes
 		
+		mapGraph.addRestaurant("Testraunt",new Point2D.Double(56,110),"532");
+		mapComp.repaint();
 	}
 
 }
