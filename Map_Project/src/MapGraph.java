@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Set;
 
+import math.geom2d.Vector2D;
+
 /**
  * A data structure for storing map information
  * 
@@ -58,8 +60,8 @@ public class MapGraph {
 				// check for intersection
 				for (int i = 0; i < this.roadsTable.get(name).size(); i++) {
 					intersectLoc = MapGraph.intersection(startpoint, endpoint,
-							this.roadsTable.get(name).get(i).ends[0], this.roadsTable
-									.get(name).get(i).ends[1]);
+							this.roadsTable.get(name).get(i).ends[0],
+							this.roadsTable.get(name).get(i).ends[1]);
 					if (intersectLoc != null) {
 						// add an intersection object to the intersections
 						// HashMap
@@ -116,8 +118,40 @@ public class MapGraph {
 		return true;
 	}
 
-	private static Point2D intersection(Point2D startpoint, Point2D endpoint,
-			Point2D ends, Point2D ends2) {
+	/*
+	 * implementation of intersection() is based on:
+	 * http://stackoverflow.com/questions
+	 * /563198/how-do-you-detect-where-two-line-segments-intersect
+	 */
+	private static Point2D intersection(Point2D startpoint_road1,
+			Point2D endpoint_road1, Point2D startpoint_road2,
+			Point2D endpoint_road2) {
+
+		// create p,q,r,s
+		Vector2D p = new Vector2D(startpoint_road1.getX(),
+				startpoint_road1.getY());
+		Vector2D q = new Vector2D(startpoint_road2.getX(),
+				startpoint_road2.getY());
+		Vector2D r = new Vector2D(endpoint_road1.getX() - p.getX(),
+				endpoint_road1.getY() - p.getY());
+		Vector2D s = new Vector2D(endpoint_road2.getX() - q.getX(),
+				endpoint_road2.getY() - q.getY());
+
+		// make decision based on the case
+		double r_cross_s = r.cross(s);
+		double q_minus_p_cross_r = (q.minus(p)).cross(r);
+		if (r_cross_s == 0) {
+			if (q_minus_p_cross_r == 0)
+				System.out.println("Collinear segment found");
+			return null;
+		}
+		double u = q_minus_p_cross_r / r_cross_s;
+		double t = (q.minus(p)).cross(s);
+		if (u <= 1 && u >= 0 && t <= 1 && t >= 0) {
+			Vector2D intersection = p.plus((r.times(t)));
+			return new Point2D.Double(intersection.getX(), intersection.getY());
+		}
+		// in this case, the segments are not parallel but do not intersect
 		return null;
 	}
 
@@ -133,6 +167,7 @@ public class MapGraph {
 	}
 
 	/**
+	 * TODO: consider getting rid of this method
 	 * 
 	 * @return true if addition of node 'a' was successful, false otherwise
 	 */
@@ -146,8 +181,8 @@ public class MapGraph {
 	public boolean containsNode(MapNode c) {
 		return false;
 	}
-	
-	public Collection<Intersection> getIntersections(){
+
+	public Collection<Intersection> getIntersections() {
 		return this.intersectionTable.values();
 	}
 

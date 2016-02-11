@@ -23,5 +23,10 @@ public class RoadList extends ArrayList<RoadSegment> {
 				this.get(this.size() - 1).ends[1] };
 		return out;
 	}
+	
+	@Override
+	public String toString() {
+		return this.roadName;
+	}
 
 }
