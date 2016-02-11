@@ -37,8 +37,16 @@ public class MapComponent extends JComponent{
 		//pull in all intersections
 		Collection<Intersection> intersections = this.mapGraph.getIntersections();
 		//draw them
+		for(Intersection intersection : intersections){
+			drawIntersection(g2,intersection);
+		}
 	}
 	
+
+	private void drawIntersection(Graphics2D g2, Intersection intersection) {
+		intersection.getLocation();
+	}
+
 	private void drawRoad(Graphics2D g2, RoadList road){
 		//this definitely needs to be changed if we want any bends in the roads
 		Point2D[] endpoints = road.getEndPoints();

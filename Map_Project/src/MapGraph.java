@@ -67,13 +67,13 @@ public class MapGraph {
 						// HashMap
 						// //make sure to point the intersection to the correct
 						// roads
-
+						
 						// use road names to define keys for nodes
 						String intersectionKeyName = name
 								.compareTo(newRoadName) > 0 ? (name + newRoadName)
 								: (newRoadName + name);
 						Intersection curIntersection = new Intersection(
-								intersectionKeyName);
+								intersectionKeyName,intersectLoc);
 						this.intersectionTable.put(intersectionKeyName,
 								curIntersection);
 
@@ -100,6 +100,7 @@ public class MapGraph {
 						// update info for the last intersection
 						lastEndpoint = intersectLoc;
 						lastIntersection = curIntersection;
+						break;
 					}
 				}
 			}
@@ -118,12 +119,18 @@ public class MapGraph {
 		return true;
 	}
 
-	/*
+	/**
 	 * implementation of intersection() is based on:
 	 * http://stackoverflow.com/questions
 	 * /563198/how-do-you-detect-where-two-line-segments-intersect
+	 * @param startpoint_road1
+	 * @param endpoint_road1
+	 * @param startpoint_road2
+	 * @param endpoint_road2
+	 * @return the point of intersection if it exists, or null if the segments
+	 *         do not exist
 	 */
-	private static Point2D intersection(Point2D startpoint_road1,
+	public static Point2D intersection(Point2D startpoint_road1,
 			Point2D endpoint_road1, Point2D startpoint_road2,
 			Point2D endpoint_road2) {
 
@@ -146,7 +153,7 @@ public class MapGraph {
 			return null;
 		}
 		double u = q_minus_p_cross_r / r_cross_s;
-		double t = (q.minus(p)).cross(s);
+		double t = (q.minus(p)).cross(s)/(r.cross(s));
 		if (u <= 1 && u >= 0 && t <= 1 && t >= 0) {
 			Vector2D intersection = p.plus((r.times(t)));
 			return new Point2D.Double(intersection.getX(), intersection.getY());
