@@ -29,6 +29,8 @@ public class TestingMain {
 				new Point2D.Double(50, 400));
 		mapGraph.addRoad("Brick lane", new Point2D.Double(0, 100),
 				new Point2D.Double(400, 100));
+		mapGraph.addRoad("slanted road", new Point2D.Double(300, 0),
+				new Point2D.Double(0, 400));
 		// be sure to test three way intersection
 		// for some reason, putting "mapComp.repaint()" at the end of the code
 		// made the roads not draw sometimes

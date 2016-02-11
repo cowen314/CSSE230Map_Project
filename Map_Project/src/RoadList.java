@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 
@@ -9,6 +10,10 @@ import java.util.ArrayList;
  */
 public class RoadList extends ArrayList<RoadSegment> {
 	private String roadName;
+	/**
+	 * the default color of roads
+	 */
+	public static final Color color = Color.black;
 
 	public void changeName(String name) {
 		this.roadName = name;

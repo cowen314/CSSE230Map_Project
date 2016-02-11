@@ -37,8 +37,11 @@ public class MapGraph {
 	 */
 	public boolean addRoad(String newRoadName, Point2D startpoint,
 			Point2D endpoint) {
-		if (this.roadsTable.containsKey(newRoadName))
+		if (this.roadsTable.containsKey(newRoadName)){
+			System.out.println("Attempted to add duplicate road");
 			return false;
+		}
+			
 
 		// make an entry in the table for the new road
 		RoadList newRoad = new RoadList();

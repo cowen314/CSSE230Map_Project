@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.geom.Point2D;
 
 /**
@@ -6,7 +7,15 @@ import java.awt.geom.Point2D;
  * @author owencb. Created Feb 8, 2016.
  */
 public class Intersection extends MapNode {
-
+	/**
+	 * the default color of intersections
+	 */
+	public static final Color color = Color.red;
+	
+	/**
+	 * default diameter of intersections
+	 */
+	public static final double DIAMETER = 10;
 	
 	/**
 	 * partial intersection constructor
