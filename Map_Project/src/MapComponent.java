@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Ellipse2D;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -44,7 +45,10 @@ public class MapComponent extends JComponent{
 	
 
 	private void drawIntersection(Graphics2D g2, Intersection intersection) {
-		intersection.getLocation();
+		Point2D loc = intersection.getLocation();
+		Ellipse2D marker = new Ellipse2D.Double(loc.getX()-5,loc.getY()-5,10,10);
+		g2.setColor(Color.yellow);
+		g2.fill(marker);
 	}
 
 	private void drawRoad(Graphics2D g2, RoadList road){
@@ -53,7 +57,6 @@ public class MapComponent extends JComponent{
 		Line2D line = new Line2D.Double(endpoints[0],endpoints[1]);
 		g2.setColor(Color.black);
 		g2.draw(line);
-		Line2D line2 = new Line2D.Double(new Point2D.Double(10,10),new Point2D.Double(100,100));
 		//line2.
 	}
 	
