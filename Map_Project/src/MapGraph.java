@@ -248,13 +248,29 @@ public class MapGraph {
 	public Collection<RoadList> getRoads() {
 		return this.roadsTable.values();
 	}
-	
+
 	/**
-	 *
+	 * 
 	 * @return a collection of all restaurants
 	 */
 	public Collection<Restaurant> getRestaurants() {
 		return this.restaurantsTable.values();
+	}
+
+	/**
+	 * @return a LinkedList containing the road segments of the path that gives
+	 *         the shortest time
+	 */
+	public LinkedList<RoadSegment> shortestPath_Time() {
+		return null;
+	}
+
+	/**
+	 * @return a LinkedList containing the road segments of the path that gives
+	 *         the shortest distance
+	 */
+	public LinkedList<RoadSegment> shortestPath_distance() {
+		return null;
 	}
 
 }
