@@ -20,7 +20,7 @@ public class Restaurant {
 	/**
 	 * default diameter of restaurant marker
 	 */
-	public static final double DIAMETER = 10;
+	public static final double DIAMETER = 8;
 	
 	private String name;
 	private Point2D location;

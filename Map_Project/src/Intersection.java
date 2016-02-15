@@ -11,12 +11,12 @@ public class Intersection extends MapNode {
 	/**
 	 * the default color of intersections
 	 */
-	public static final Color color = Color.red;
+	public static final Color color = Color.BLACK;
 	
 	/**
 	 * default diameter of intersections
 	 */
-	public static final double DIAMETER = 10;
+	public static final double DIAMETER = 5;
 	
 	private ArrayList<Restaurant> restaurants;
 	

@@ -4,8 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Ellipse2D;
+import java.io.File;
 import java.util.Collection;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 /**
@@ -15,6 +17,8 @@ import javax.swing.JComponent;
  */
 public class MapComponent extends JComponent {
 	private MapGraph mapGraph;
+	private ImageIcon background;
+	private ImageIcon RoseHulmanSprite;
 
 	/**
 	 * constructs a MapGraph object
@@ -23,12 +27,23 @@ public class MapComponent extends JComponent {
 	 */
 	public MapComponent(MapGraph mapGraph) {
 		this.mapGraph = mapGraph;
+		// Get directory we are currently in, then add on \src\imageName.png
+		File currentDir = new File("");
+		String picPath = currentDir.getAbsolutePath() + "\\src\\BlankMapDrawing.png";
+		this.background = new ImageIcon(picPath);
+		
+		picPath = currentDir.getAbsolutePath() + "\\src\\RoseR.png";
+		this.RoseHulmanSprite = new ImageIcon(picPath);
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		
+		// Paint ImageIcons for Map and RH Logo onto Component
+		this.background.paintIcon(this, g2, 0, 0);
+		this.RoseHulmanSprite.paintIcon(this, g2, 375, 110);
 
 		// pull in all roads
 		Collection<RoadList> roads = this.mapGraph.getRoads();
@@ -45,7 +60,7 @@ public class MapComponent extends JComponent {
 			drawIntersection(g2, intersection);
 		}
 		
-		// pull in all intersections
+		// pull in all restaurants
 		Collection<Restaurant> restaurants = this.mapGraph.getRestaurants();
 		// draw them
 		for (Restaurant restaurant : restaurants) {
