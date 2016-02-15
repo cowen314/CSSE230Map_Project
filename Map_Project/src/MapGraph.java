@@ -2,6 +2,7 @@ import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 import math.geom2d.Vector2D;
@@ -261,7 +262,16 @@ public class MapGraph {
 	 * @return a LinkedList containing the road segments of the path that gives
 	 *         the shortest time
 	 */
-	public LinkedList<RoadSegment> shortestPath_Time() {
+	public LinkedList<RoadSegment> shortestPath_Time(Intersection startPoint, Intersection endPoint) {
+		PriorityQueue<AStarElement> openSet = new PriorityQueue<AStarElement>();
+		LinkedList<AStarElement> closedSet = new LinkedList<AStarElement>();
+		openSet.add(new AStarElement(startPoint));
+		while(!openSet.isEmpty()){
+			AStarElement X = openSet.poll();
+			if(X.element==endPoint)
+				return null;
+			//TODO: left off here
+		}
 		return null;
 	}
 
@@ -271,6 +281,33 @@ public class MapGraph {
 	 */
 	public LinkedList<RoadSegment> shortestPath_distance() {
 		return null;
+	}
+	
+	private class AStarElement implements Comparable<AStarElement> {
+		@SuppressWarnings("unused")
+		private double f;
+		@SuppressWarnings("unused")
+		private Intersection element;
+		
+		/**
+		 * Default constructor
+		 * @param element 
+		 *
+		 */
+		@SuppressWarnings("unused")
+		public AStarElement(Intersection element) {
+			this.f = 0;
+			this.element = element;
+		}
+
+		@Override
+		public int compareTo(AStarElement arg0) {
+			if(f > arg0.f)
+				return 1;
+			if(f < arg0.f)
+				return -1;
+			return 0;
+		}
 	}
 
 }
