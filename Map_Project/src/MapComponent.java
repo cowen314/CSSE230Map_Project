@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.Collection;
 
@@ -19,6 +20,8 @@ public class MapComponent extends JComponent {
 	private MapGraph mapGraph;
 	private ImageIcon background;
 	private ImageIcon RoseHulmanSprite;
+	private static final Color MAP_FRAME_COLOR = Color.BLUE;
+	private static final int MAP_OFFSET = 20;
 
 	/**
 	 * constructs a MapGraph object
@@ -41,9 +44,13 @@ public class MapComponent extends JComponent {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		
+		Rectangle2D.Double mapFrame = new Rectangle2D.Double(0, 0, 500 + (2 * MAP_OFFSET), 500 + (2 * MAP_OFFSET));
+		g2.setColor(MAP_FRAME_COLOR);
+		g2.fill(mapFrame);
+		
 		// Paint ImageIcons for Map and RH Logo onto Component
-		this.background.paintIcon(this, g2, 0, 0);
-		this.RoseHulmanSprite.paintIcon(this, g2, 375, 110);
+		this.background.paintIcon(this, g2, MAP_OFFSET, MAP_OFFSET);
+		this.RoseHulmanSprite.paintIcon(this, g2, MAP_OFFSET + 375, MAP_OFFSET + 110);
 
 		// pull in all roads
 		Collection<RoadList> roads = this.mapGraph.getRoads();

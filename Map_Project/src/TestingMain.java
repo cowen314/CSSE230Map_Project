@@ -35,7 +35,7 @@ public class TestingMain {
 				new Point2D.Double(0, 400));
 		// be sure to test three way intersection
 		
-		mapGraph.addRestaurant("Testraunt",new Point2D.Double(56,110),"532");
+		mapGraph.addRestaurant("Testraunt",new Point2D.Double(56,110),"532", "$");
 		mapComp.repaint();
 	}
 
