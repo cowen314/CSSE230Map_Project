@@ -1,4 +1,5 @@
 import java.awt.geom.Point2D;
+import java.util.LinkedList;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -27,16 +28,30 @@ public class TestingMain {
 		mapComp.setSize(500,500);
 		mapComp.setVisible(true);
 		frame.add(mapComp);
-		mapGraph.addRoad("Test drive", new Point2D.Double(50, 0),
-				new Point2D.Double(50, 400));
-		mapGraph.addRoad("Brick lane", new Point2D.Double(0, 100),
-				new Point2D.Double(400, 100));
-		mapGraph.addRoad("slanted road", new Point2D.Double(300, 0),
-				new Point2D.Double(0, 400));
+//		mapGraph.addRoad("Test drive", new Point2D.Double(50, 0),
+//				new Point2D.Double(50, 400));
+//		mapGraph.addRoad("Brick lane", new Point2D.Double(0, 100),
+//				new Point2D.Double(400, 100));
+//		mapGraph.addRoad("slanted road", new Point2D.Double(300, 0),
+//				new Point2D.Double(0, 400));
+//		mapGraph.addRoad("another road", new Point2D.Double(150, 50),
+//				new Point2D.Double(150, 400));
 		// be sure to test three way intersection
 		
-		mapGraph.addRestaurant("Testraunt",new Point2D.Double(56,110),"532", "$");
+		mapGraph.addRoad("Road 1", new Point2D.Double(10, 10), new Point2D.Double(99, 10));
+		mapGraph.addRoad("Road 2", new Point2D.Double(10, 10), new Point2D.Double(10, 99));
+		mapGraph.addRoad("Road 3", new Point2D.Double(99, 99), new Point2D.Double(10, 99));
+		mapGraph.addRoad("Road 4", new Point2D.Double(99, 99), new Point2D.Double(99, 10));
+		mapGraph.addRoad("Slanted road", new Point2D.Double(20, 0),
+				new Point2D.Double(80, 100));
+		LinkedList<Intersection> shortestPath = mapGraph.shortestPath_distance(
+				mapGraph.getIntersectionByName("Road 1 + Road 2"),
+				mapGraph.getIntersectionByName("Road 3 + Slanted road"));
+		
+		
+		//mapGraph.addRestaurant("Testraunt",new Point2D.Double(56,110),"532", "$");
 		mapComp.repaint();
+		
 	}
 
 }

@@ -55,5 +55,10 @@ public class Intersection extends MapNode {
 	public void addRestaurant(Restaurant restaurant){
 		this.restaurants.add(restaurant);
 	}
+	
+	@Override
+	public String toString() {
+		return this.lookupName;
+	}
 
 }
