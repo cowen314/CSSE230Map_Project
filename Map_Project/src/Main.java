@@ -27,15 +27,17 @@ public class Main {
 		// made the roads not draw sometimes
 		
 		TripPlanner tripPlanner = new TripPlanner(mapGraph);
+		SearchPanel searchPanel = new SearchPanel(mapGraph);
 		
 		JPanel controlPanel = new JPanel();
 		JButton randomRestSelect = new RandomRestaurantSelectButton(frame, mapGraph);
 		
 		controlPanel.add(randomRestSelect);
-		frame.add(tripPlanner, BorderLayout.EAST);
+		frame.add(searchPanel, BorderLayout.LINE_START);
+		frame.add(tripPlanner, BorderLayout.LINE_END);
 		frame.add(mapComp, BorderLayout.CENTER);
 		frame.add(controlPanel, BorderLayout.SOUTH);
-		frame.setSize(1300, 610);
+		frame.setSize(1700, 800);
 //		frame.pack();
 
 	}

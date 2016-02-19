@@ -49,8 +49,8 @@ public class MapComponent extends JComponent {
 		g2.fill(mapFrame);
 		
 		// Paint ImageIcons for Map and RH Logo onto Component
-		//this.background.paintIcon(this, g2, MAP_OFFSET, MAP_OFFSET);
-		//this.RoseHulmanSprite.paintIcon(this, g2, MAP_OFFSET + 375, MAP_OFFSET + 110);
+		this.background.paintIcon(this, g2, MAP_OFFSET, MAP_OFFSET);
+		this.RoseHulmanSprite.paintIcon(this, g2, MAP_OFFSET + 375, MAP_OFFSET + 110);
 
 		// pull in all roads
 		Collection<RoadList> roads = this.mapGraph.getRoads();
