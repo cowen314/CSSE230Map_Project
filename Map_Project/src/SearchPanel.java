@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -47,14 +48,15 @@ public class SearchPanel extends JPanel {
 		JLabel r2 = new JLabel("View Restaurants in Price Range:");
 		r2.setFont(new Font("Batang", Font.PLAIN, 18));
 
-//		j = this.alphabetize();
 		JPanel pp = this.pricePanelComboBox();
-
+		JPanel typeBox = this.typePanelComboBox();
+		
 		this.add(r);
 		this.add(r2);
 		this.add(pp);
+		this.add(typeBox);
 		this.add(j);
-
+	
 	}
 	/**
 	 * 
@@ -75,6 +77,32 @@ public class SearchPanel extends JPanel {
 		priceRangeBox.addActionListener(getList);
 		pPanel.add(priceRangeBox);
 		return pPanel;
+	}
+	
+	private JPanel typePanelComboBox() {
+		JPanel tPanel = new JPanel();
+		String[] tOptions = new String[17];
+		tOptions[0] = "ALL";
+		tOptions[1] = "Mexican";
+		tOptions[2] = "BBQ";
+		tOptions[3] = "Steakhouse";
+		tOptions[4] = "Pub";
+		tOptions[5] = "Breakfast";
+		tOptions[6] = "Sushi";
+		tOptions[7] = "Indian";
+		tOptions[8] = "Cajun";
+		tOptions[9] = "German";
+		tOptions[10] = "Italian";
+		tOptions[11] = "Cafe";
+		tOptions[12] = "Ice Cream";
+		tOptions[13] = "Pizza";
+		tOptions[14] = "Seafood";
+		tOptions[15] = "Sandwiches";
+		tOptions[16] = "American";
+		JComboBox priceRangeBox = new JComboBox(tOptions);
+//		priceRangeBox.addActionListener(getList);
+		tPanel.add(priceRangeBox);
+		return tPanel;
 	}
 	/**
 	 * Action listener for the combo box
@@ -104,10 +132,11 @@ public class SearchPanel extends JPanel {
 		}
 		for (Restaurant r : this.restaurantList) {
 			if (r.getPriceLevel() == s.length()) {
-				JLabel rest = new JLabel(r.getName());
+				JButton rest = new JButton(r.getName());
 				pc.add(r.getName());
 //				System.out.println(r.getName());
-
+				
+				
 			}
 		}
 		rl = pc;

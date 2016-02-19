@@ -28,6 +28,8 @@ public class Restaurant {
 	private int priceLevel;
 	private ArrayList<Integer> reviews;
 	private String streetAddress;
+	private String type;
+	private double rating;
 	
 	/**
 	 * Returns the value of the field called 'name'.
@@ -58,11 +60,22 @@ public class Restaurant {
 		return this.location;
 	}
 	
-	public Restaurant(String name, Point2D location, Intersection intersection, String streetAddress, String price){
+	public double getRating(){
+		return this.rating;
+	}
+	
+	public String getType(){
+		return this.type;
+	}
+	
+	public Restaurant(String name, Point2D location, Intersection intersection, String streetAddress, String price ,String type,double rating){
 		this.name = name;
 		this.location = location;
 		this.intersection = intersection;
 		this.streetAddress = streetAddress;
 		this.priceLevel = price.length();
+		this.type = type;
+		this.rating = rating;
+		
 	}
 }

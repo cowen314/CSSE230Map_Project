@@ -148,6 +148,7 @@ public class TripPlanner extends JPanel {
 		shortestPathButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				System.out.println("Calculating Shortest Trip");
+				
 				// Need to call A* when it's implemented for shortest trip
 			}
 		});

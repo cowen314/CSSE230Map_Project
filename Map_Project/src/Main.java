@@ -37,7 +37,7 @@ public class Main {
 		frame.add(tripPlanner, BorderLayout.LINE_END);
 		frame.add(mapComp, BorderLayout.CENTER);
 		frame.add(controlPanel, BorderLayout.SOUTH);
-		frame.setSize(1700, 800);
+		frame.setSize(1900, 800);
 //		frame.pack();
 
 	}
@@ -105,63 +105,63 @@ public class Main {
 
 	private static void addRestaurants(MapGraph mg) {
 		mg.addRestaurant("Real Hacienda", new Point2D.Double(OFFSET + 340, OFFSET + 340),
-				"2141 IN-46, Terre Haute, IN 47803", "$");
+				"2141 IN-46, Terre Haute, IN 47803", "$","Mexican", 4.1);
 		
 		mg.addRestaurant("Rick's Smokehouse", new Point2D.Double(OFFSET + 225, OFFSET + 180),
-				"3102 Wabash Ave, Terre Haute, IN 47803", "$$");
+				"3102 Wabash Ave, Terre Haute, IN 47803", "$$", "BBQ", 4.2);
 		
 		mg.addRestaurant("M. Moggers Restaurant & Pub", new Point2D.Double(OFFSET + 115, OFFSET + 232),
-						"908 Poplar St., Terre Haute, IN 47803", "$$");
+						"908 Poplar St., Terre Haute, IN 47803", "$$", "Pub", 3.8);
 		
 		mg.addRestaurant("Stables Steakhouse", new Point2D.Double(OFFSET + 123, OFFSET + 240),
-				"908 Poplar St., Terre Haute, IN 47803", "$$$");
+				"908 Poplar St., Terre Haute, IN 47803", "$$$", "Steakhouse", 4.5);
 		
 		mg.addRestaurant("Cackleberries", new Point2D.Double(OFFSET + 100, OFFSET + 240),
-				"303 S 7th St., Terre Haute, IN 47803", "$");
+				"303 S 7th St., Terre Haute, IN 47803", "$", "Breakfast", 3.9);
 		
 		mg.addRestaurant("J. Ford's Black Angus Steakhouse", new Point2D.Double(OFFSET + 85, OFFSET + 255),
-				"502 S 3rd St., Terre Haute, IN 47807", "$$$");
+				"502 S 3rd St., Terre Haute, IN 47807", "$$$" ,"Steakhouse", 4.6);
 		
 		mg.addRestaurant("Taj Mahal Indian Cuisine", new Point2D.Double(OFFSET + 75, OFFSET + 285),
-				"1349 S 3rd St., Terre Haute, IN 47802", "$$");
+				"1349 S 3rd St., Terre Haute, IN 47802", "$$", "Indian", 4.3);
 		
 		mg.addRestaurant("Umi Grill and Sushi", new Point2D.Double(OFFSET + 85, OFFSET + 320),
-				"2002 S 3rd St., Terre Haute, IN 47802", "$$$");
+				"2002 S 3rd St., Terre Haute, IN 47802", "$$$", "Sushi", 4.1);
 		
 		mg.addRestaurant("Chava's Mexican Grill", new Point2D.Double(OFFSET + 100, OFFSET + 223),
-				"669 Wabash Ave., Terre Haute, IN 47807", "$");
+				"669 Wabash Ave., Terre Haute, IN 47807", "$", "Mexican", 3.6);
 		
 		mg.addRestaurant("J. Gumbo's", new Point2D.Double(OFFSET + 95, OFFSET + 223),
-				"665 Wabash Ave., Terre Haute, IN 47807", "$");
+				"665 Wabash Ave., Terre Haute, IN 47807", "$", "Cajun", 4.0);
 		
 		mg.addRestaurant("The Bierstube", new Point2D.Double(OFFSET + 160, OFFSET + 35),
-				"1727 Lafayette Ave., Terre Haute, IN 47804", "$");
+				"1727 Lafayette Ave., Terre Haute, IN 47804", "$", "German", 3.8);
 		
 		mg.addRestaurant("Piloni's Italian Restaurant", new Point2D.Double(OFFSET + 170, OFFSET + 35),
-				"1733 Lafayette Ave., Terre Haute, IN 47804", "$$");
+				"1733 Lafayette Ave., Terre Haute, IN 47804", "$$", "Italian" ,4.4);
 		
 		mg.addRestaurant("Texas Roadhouse", new Point2D.Double(OFFSET + 75, OFFSET + 365),
-				"2941 S 3rd St., Terre Haute, IN 47802", "$$");
+				"2941 S 3rd St., Terre Haute, IN 47802", "$$", "Steakhouse", 4.4);
 		
 		mg.addRestaurant("Java Haute", new Point2D.Double(OFFSET + 257, OFFSET + 187),
-				"3805 Wabash Ave., Terre Haute, IN 47803", "$");
+				"3805 Wabash Ave., Terre Haute, IN 47803", "$" ,"Cafe", 4.3);
 		
 		mg.addRestaurant("Baskin-Robbins Ice Cream", new Point2D.Double(OFFSET + 250, OFFSET + 190),
-				"85 S Fruitridge Ave., Terre Haute, IN 47803", "$");
+				"85 S Fruitridge Ave., Terre Haute, IN 47803", "$", "Ice Cream", 4.7);
 		
 		mg.addRestaurant("Twiggy's One Headlight Pub", new Point2D.Double(OFFSET + 490, OFFSET + 125),
-				"8567 Wabash Ave., Terre Haute, IN 47803", "$$");
+				"8567 Wabash Ave., Terre Haute, IN 47803", "$$", "Pizza", 4.0);
 		
 		mg.addRestaurant("Grand Traverse Pie Company", new Point2D.Double(OFFSET + 85, OFFSET + 210),
-				"75 N 3rd St Ave., Terre Haute, IN 47807", "$$");
+				"75 N 3rd St Ave., Terre Haute, IN 47807", "$$", "Sandwiches", 4.4);
 		
 		mg.addRestaurant("TGI Friday's", new Point2D.Double(OFFSET + 65, OFFSET + 430),
-				"Honey Creek Mall, 3401 US-41, Terre Haute, IN 47802", "$$");
+				"Honey Creek Mall, 3401 US-41, Terre Haute, IN 47802", "$$", "American", 3.6);
 		
 		mg.addRestaurant("Red Lobster", new Point2D.Double(OFFSET + 75, OFFSET + 440),
-				"3407 Lafayette Ave., Terre Haute, IN 47802", "$$$");
+				"3407 Lafayette Ave., Terre Haute, IN 47802", "$$$", "Seafood", 4.0);
 		
 		mg.addRestaurant("Sonka Irish Pub", new Point2D.Double(OFFSET + 150, OFFSET + 205),
-				"1366 Wabash Ave., Terre Haute, IN 47807", "$$");
+				"1366 Wabash Ave., Terre Haute, IN 47807", "$$", "Pub", 4.3);
 		}
 }

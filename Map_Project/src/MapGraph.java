@@ -196,7 +196,7 @@ public class MapGraph {
 	 * @return true if the restaurant is successfully added, false otherwise
 	 */
 	public boolean addRestaurant(String name, Point2D location,
-			String streetAddress, String price) {
+			String streetAddress, String price, String type, Double rating) {
 		// check the input
 		if (this.restaurantsTable.containsKey(name))
 			return false;
@@ -204,7 +204,7 @@ public class MapGraph {
 		if (closestIntersection == null)
 			return false;
 		Restaurant newRes = new Restaurant(name, location, closestIntersection,
-				streetAddress, price);
+				streetAddress, price, type, rating);
 		// add the restaurant to the restaurant table, and the specified
 		// intersection
 		this.restaurantsTable.put(name, newRes);
