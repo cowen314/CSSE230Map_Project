@@ -275,28 +275,8 @@ public class MapGraph {
 	 */
 	public LinkedList<Intersection> shortestPath_Time(Intersection startPoint,
 			Intersection endPoint) {
-
 		return null;
 	}
-
-	// /**
-	// * Reconstructs path using the
-	// *
-	// * @param current
-	// * @param Came_From
-	// *
-	// * @return the shortest path
-	// */
-	// private LinkedList<Intersection> reconstructPath(
-	// HashMap<AStarElement, AStarElement> Came_From, AStarElement current) {
-	// LinkedList<Intersection> totalPath = new LinkedList<Intersection>();
-	// totalPath.add(current.element);
-	// while (Came_From.containsKey(current)) {
-	// current = Came_From.get(current);
-	// totalPath.addLast(current.element);
-	// }
-	// return null;
-	// }
 
 	/**
 	 * Reconstructs path using the
@@ -315,68 +295,6 @@ public class MapGraph {
 		}
 		return path;
 	}
-
-	/**
-	 * @return a LinkedList containing the road segments of the path that gives
-	 *         the shortest distance
-	 */
-	// public LinkedList<Intersection> shortestPath_distance(
-	// Intersection startPoint, Intersection endPoint) {
-	// // Initialize stuff
-	// PriorityQueue<AStarElement> openSet = new PriorityQueue<AStarElement>();
-	// HashMap<Intersection, AStarElement> openSetMap = new
-	// HashMap<Intersection, AStarElement>();
-	// LinkedList<AStarElement> closedSet = new LinkedList<AStarElement>();
-	// HashMap<AStarElement, AStarElement> Came_From = new HashMap<AStarElement,
-	// AStarElement>();
-	// AStarElement startElement = new AStarElement(startPoint);
-	// startElement.f = startPoint.location.distance(endPoint.location);
-	// openSet.add(startElement);
-	// openSetMap.put(startPoint, openSet.peek());
-	//
-	// // main loop
-	// while (!openSet.isEmpty()) {
-	// AStarElement X = openSet.poll();
-	// if (X.element == endPoint)
-	// return reconstructPath(Came_From, X);
-	// closedSet.add(X);
-	// openSetMap.remove(X.element);
-	// Intersection neighborIntersection;
-	// for (RoadSegment roadSegment : X.element.neighborRoads) {
-	// // we don't know which of the intersections in intersects[] that
-	// // X.element is
-	// // assign neighbor to the end that isn't X.element
-	// if (roadSegment.intersects[0] == X.element)
-	// neighborIntersection = roadSegment.intersects[1];
-	// else
-	// neighborIntersection = roadSegment.intersects[0];
-	// if (neighborIntersection == null)
-	// continue;
-	// if (!closedSet.contains(neighborIntersection)) {
-	// double tenative_g_score = X.g + roadSegment.length();
-	// AStarElement temp = new AStarElement(
-	// neighborIntersection);
-	// if (!openSet.contains(neighborIntersection)) {
-	// temp.g = tenative_g_score;
-	// temp.f = tenative_g_score
-	// + temp.element.getLocation().distance(
-	// endPoint.location);
-	// openSet.add(temp);
-	// openSetMap.put(temp.element, temp);
-	// } else if (tenative_g_score >= openSetMap
-	// .get(neighborIntersection).g)
-	// continue;
-	//
-	// temp.parent = X;
-	// //Came_From.put(neighbor, X);
-	//
-	// }
-	//
-	// }
-	// }
-	// // if we reach this point, no route exists, and null is returned
-	// return null;
-	// }
 
 	/**
 	 * @return a LinkedList containing the road segments of the path that gives
