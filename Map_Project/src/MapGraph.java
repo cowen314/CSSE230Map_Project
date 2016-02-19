@@ -219,7 +219,7 @@ public class MapGraph {
 	 * @param location
 	 * @return the closest intersection
 	 */
-	private Intersection calculateClosestIntersection(Point2D location) {
+	public Intersection calculateClosestIntersection(Point2D location) {
 		Collection<Intersection> allIntersections = this.intersectionTable
 				.values();
 		double minDistance = -1;

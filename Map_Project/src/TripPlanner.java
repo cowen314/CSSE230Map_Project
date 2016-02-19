@@ -18,6 +18,9 @@ import javax.swing.border.EmptyBorder;
 public class TripPlanner extends JPanel {
 
 	private Restaurant[] restaurantList;
+	private JComboBox<String> startComboBox;
+	private int comboBoxesCreated;
+	private JComboBox<String> endComboBox;
 
 	public TripPlanner(MapGraph mg) {
 		super();
@@ -25,7 +28,26 @@ public class TripPlanner extends JPanel {
 		// Add some spacing around our panel
 		this.setBorder(new EmptyBorder(30, 30, 30, 30));
 		this.buildTripPlannerGUI();
+		this.comboBoxesCreated = 0;
 
+	}
+	
+	public Restaurant[] getRestaurants(){
+		return this.restaurantList;
+	}
+	
+	/**
+	 * @return get the restaurant selected as the start
+	 */
+	public Restaurant getStart(){
+		return this.restaurantList[this.startComboBox.getSelectedIndex()];
+	}
+	
+	/**
+	 * @return get the restaurant selected as the end
+	 */
+	public Restaurant getEnd(){
+		return this.restaurantList[this.startComboBox.getSelectedIndex()];
 	}
 
 	private void buildTripPlannerGUI() {
@@ -90,14 +112,25 @@ public class TripPlanner extends JPanel {
 		}
 		restaurantNames[counter] = "Rose-Hulman Institute of Technology";
 
+		// TODO: clean this up
 		JComboBox<String> comboBox = new JComboBox<String>(restaurantNames);
 		comboBox.setSelectedIndex(counter);
-		return new JComboBox<String>(restaurantNames);
+		if (this.comboBoxesCreated == 0) {
+			this.startComboBox = new JComboBox<String>(restaurantNames);
+			return this.startComboBox;
+		}
+		if (this.comboBoxesCreated == 1) {
+			this.endComboBox = new JComboBox<String>(restaurantNames);
+			return this.endComboBox;
+		}
+
+		System.out.println("Warning: too many combo boxes created");
+		return null;
+
 	}
 
 	private JPanel createDropDownPanel(String labelStr) {
 		JPanel toReturn = new JPanel();
-
 		// Make Label
 		JLabel label = new JLabel(labelStr);
 
@@ -115,7 +148,7 @@ public class TripPlanner extends JPanel {
 
 		return toReturn;
 	}
-	
+
 	private JLabel createOptionalDestinationLabel() {
 		JLabel optionalDestLabel = new JLabel("Optional Destinations:");
 
@@ -130,12 +163,12 @@ public class TripPlanner extends JPanel {
 
 		return optionalDestLabel;
 	}
-	
+
 	private JPanel createOptionalDestinationPanel() {
 		JPanel toReturn = new JPanel();
 		int numRows = (this.restaurantList.length / 2);
 		toReturn.setLayout(new GridLayout(numRows, 1, 10, 0));
-		for(Restaurant r : this.restaurantList) {
+		for (Restaurant r : this.restaurantList) {
 			JCheckBox checkBox = new JCheckBox(r.getName());
 			toReturn.add(checkBox);
 		}
@@ -149,6 +182,8 @@ public class TripPlanner extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				System.out.println("Calculating Shortest Trip");
 				
+				//EaglesBeard.getMapGraph().calculateClosestIntersection(startRes.getLocation());
+				// EaglesBeard.getMapGraph().shortestPath_distance();
 				// Need to call A* when it's implemented for shortest trip
 			}
 		});
