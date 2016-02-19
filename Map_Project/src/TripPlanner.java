@@ -21,6 +21,7 @@ public class TripPlanner extends JPanel {
 	private JComboBox<String> startComboBox;
 	private int comboBoxesCreated;
 	private JComboBox<String> endComboBox;
+	private TripPlannerFunctionality tpFunct;
 
 	public TripPlanner(MapGraph mg) {
 		super();
@@ -29,6 +30,7 @@ public class TripPlanner extends JPanel {
 		this.setBorder(new EmptyBorder(30, 30, 30, 30));
 		this.buildTripPlannerGUI();
 		this.comboBoxesCreated = 0;
+		this.tpFunct = new TripPlannerFunctionality(this);
 
 	}
 	
@@ -40,14 +42,16 @@ public class TripPlanner extends JPanel {
 	 * @return get the restaurant selected as the start
 	 */
 	public Restaurant getStart(){
-		return this.restaurantList[this.startComboBox.getSelectedIndex()];
+		int ind = this.startComboBox.getSelectedIndex();
+		return this.restaurantList[ind];
 	}
 	
 	/**
 	 * @return get the restaurant selected as the end
 	 */
 	public Restaurant getEnd(){
-		return this.restaurantList[this.startComboBox.getSelectedIndex()];
+		int ind = this.endComboBox.getSelectedIndex();
+		return this.restaurantList[ind];
 	}
 
 	private void buildTripPlannerGUI() {
@@ -117,13 +121,15 @@ public class TripPlanner extends JPanel {
 		comboBox.setSelectedIndex(counter);
 		if (this.comboBoxesCreated == 0) {
 			this.startComboBox = new JComboBox<String>(restaurantNames);
+			this.comboBoxesCreated++;
 			return this.startComboBox;
 		}
 		if (this.comboBoxesCreated == 1) {
 			this.endComboBox = new JComboBox<String>(restaurantNames);
+			this.comboBoxesCreated++;
 			return this.endComboBox;
 		}
-
+		this.comboBoxesCreated++;
 		System.out.println("Warning: too many combo boxes created");
 		return null;
 
@@ -141,6 +147,8 @@ public class TripPlanner extends JPanel {
 			// RHIT is last entry in list.
 			cb.setSelectedIndex(cb.getItemCount() - 1);
 		}
+
+		cb.setSelectedIndex(0);
 
 		// Add them to the new Panel
 		toReturn.add(label);
@@ -181,10 +189,7 @@ public class TripPlanner extends JPanel {
 		shortestPathButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				System.out.println("Calculating Shortest Trip");
-				
-				//EaglesBeard.getMapGraph().calculateClosestIntersection(startRes.getLocation());
-				// EaglesBeard.getMapGraph().shortestPath_distance();
-				// Need to call A* when it's implemented for shortest trip
+				System.out.println(TripPlanner.this.tpFunct.shortestDistance());
 			}
 		});
 	}

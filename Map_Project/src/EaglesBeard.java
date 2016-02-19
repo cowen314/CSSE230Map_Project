@@ -16,8 +16,9 @@ public final class EaglesBeard {
 	static final int OFFSET = 20;
 	private static MapGraph mapGraph;
 	private MapComponent mapComp;
-	private TripPlanner tripPlanner;
+	private static TripPlanner tripPlanner;
 	private SearchPanel searchPanel;
+	private final int REPAINT_INTERVAL_MS = 250;
 
 	/**
 	 * The code in this constructor brings up the entire system
@@ -49,6 +50,22 @@ public final class EaglesBeard {
 		frame.add(this.mapComp, BorderLayout.CENTER);
 		frame.add(controlPanel, BorderLayout.SOUTH);
 		frame.setSize(1900, 800);
+		
+		Runnable repaintTimer = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					while (true) {
+						Thread.sleep(EaglesBeard.this.REPAINT_INTERVAL_MS);
+						EaglesBeard.this.mapComp.repaint();
+					}
+				} catch (InterruptedException exception) {
+					// Stop when interrupted
+				}
+			}
+		};
+		new Thread(repaintTimer).start();
+		
 	}
 	
 	/**
@@ -57,6 +74,15 @@ public final class EaglesBeard {
 	public static MapGraph getMapGraph(){
 		return EaglesBeard.mapGraph;
 	}
+	
+	/**
+	 * @return a reference to the trip planner
+	 */
+	public static TripPlanner getTripPlanner(){
+		return EaglesBeard.tripPlanner;
+	}
+	
+	
 
 	private static void addRoads(MapGraph mapGraph) {
 		mapGraph.addRoad("3rd Street", new Point2D.Double(OFFSET + 80,

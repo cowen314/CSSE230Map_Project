@@ -94,11 +94,17 @@ public class MapComponent extends JComponent {
 	}
 	
 	private void drawRestaurant(Graphics2D g2, Restaurant restaurant) {
+		
 		Point2D loc = restaurant.getLocation();
 		Ellipse2D marker = new Ellipse2D.Double(loc.getX()
 				- Restaurant.DIAMETER / 2, loc.getY() - Restaurant.DIAMETER
 				/ 2, Restaurant.DIAMETER, Restaurant.DIAMETER);
-		g2.setColor(Restaurant.color);
+		if(restaurant==EaglesBeard.getTripPlanner().getStart())
+			g2.setColor(Color.GREEN);
+		else if(restaurant==EaglesBeard.getTripPlanner().getEnd())
+			g2.setColor(Color.RED);
+		else
+			g2.setColor(Restaurant.color);
 		g2.fill(marker);
 		g2.draw(marker);
 	}

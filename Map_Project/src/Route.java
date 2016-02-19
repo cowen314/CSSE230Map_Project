@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -10,7 +11,24 @@ import java.util.LinkedList;
  */
 public class Route {
 	private LinkedList<Object> routeObjects;
-	public Route(double initialDistance){
+	private double additionalDistance;
+	public Route(){
 		this.routeObjects = new LinkedList<Object>();
+	}
+	
+	public void addDistance(double distance){
+		this.additionalDistance+=distance;
+	}
+	
+	@Override
+	public String toString() {
+		Iterator it = this.routeObjects.iterator();
+		if(!it.hasNext())
+			return "";
+		String out = "Head to";
+		while(it.hasNext()){
+			//TODO: finish this
+		}
+		return out;
 	}
 }
