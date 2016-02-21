@@ -1,3 +1,4 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -7,6 +8,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -73,7 +76,10 @@ public class MapComponent extends JComponent {
 		for (Restaurant restaurant : restaurants) {
 			drawRestaurant(g2, restaurant);
 		}
+		
+		drawCurrentRoute(g2);
 	}
+	
 	private void drawRoad(Graphics2D g2, RoadList road) {
 		// this definitely needs to be changed if we want any bends in the roads
 		Point2D[] endpoints = road.getEndPoints();
@@ -81,6 +87,23 @@ public class MapComponent extends JComponent {
 		g2.setColor(Color.black);
 		g2.draw(line);
 		// line2.
+	}
+	
+	private void drawCurrentRoute(Graphics2D g2){
+		LinkedList<Intersection> route = EaglesBeard.getTripPlanner().getCurrentRoute();
+		if(route==null)
+			return;
+		Iterator<Intersection> it = route.iterator();
+		Intersection priorI = it.next();
+		
+		while(it.hasNext()){
+			Intersection curI = it.next();
+			g2.setStroke(new BasicStroke(5));
+			g2.setColor(Color.orange);
+            g2.draw(new Line2D.Float(curI.location,priorI.location));
+			priorI = curI;
+		}
+		
 	}
 	
 	private void drawIntersection(Graphics2D g2, Intersection intersection) {

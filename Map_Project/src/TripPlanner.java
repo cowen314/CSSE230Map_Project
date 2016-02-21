@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -22,6 +23,7 @@ public class TripPlanner extends JPanel {
 	private int comboBoxesCreated;
 	private JComboBox<String> endComboBox;
 	private TripPlannerFunctionality tpFunct;
+	private LinkedList<Intersection> currentRoute;
 
 	public TripPlanner(MapGraph mg) {
 		super();
@@ -189,7 +191,8 @@ public class TripPlanner extends JPanel {
 		shortestPathButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				System.out.println("Calculating Shortest Trip");
-				System.out.println(TripPlanner.this.tpFunct.shortestDistance());
+				TripPlanner.this.currentRoute = TripPlanner.this.tpFunct.shortestDistance();
+				System.out.println(TripPlanner.this.currentRoute);
 			}
 		});
 	}
@@ -198,8 +201,16 @@ public class TripPlanner extends JPanel {
 		fastestPathButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				System.out.println("Calculating Fastest Trip");
-				System.out.println(TripPlanner.this.tpFunct.shortestTime());
+				TripPlanner.this.currentRoute = TripPlanner.this.tpFunct.shortestTime();
+				System.out.println(TripPlanner.this.currentRoute);
 			}
 		});
+	}
+
+	/**
+	 * @return the current route
+	 */
+	public LinkedList<Intersection> getCurrentRoute() {
+		return this.currentRoute;
 	}
 }
