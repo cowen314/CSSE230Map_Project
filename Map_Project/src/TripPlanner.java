@@ -198,7 +198,7 @@ public class TripPlanner extends JPanel {
 		fastestPathButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				System.out.println("Calculating Fastest Trip");
-				// Need to call A* when it's implemented for the fastest trip
+				System.out.println(TripPlanner.this.tpFunct.shortestTime());
 			}
 		});
 	}

@@ -26,4 +26,18 @@ public final class TripPlannerFunctionality {
 		
 		return EaglesBeard.getMapGraph().shortestPath_distance(startI,endI);
 	}
+	
+	public LinkedList<Intersection> shortestTime(){
+		Restaurant startRes = this.tp.getStart();
+		Restaurant endRes = this.tp.getEnd();
+		Intersection startI = EaglesBeard.getMapGraph().calculateClosestIntersection(startRes.getLocation());
+		Intersection endI = EaglesBeard.getMapGraph().calculateClosestIntersection(endRes.getLocation());
+		
+		double begin = startI.getLocation().distance(startRes.getLocation());
+		double end = endI.getLocation().distance(endRes.getLocation());
+		
+		Route shortest = new Route();
+		
+		return EaglesBeard.getMapGraph().shortestPath_time(startI,endI);
+	}
 }

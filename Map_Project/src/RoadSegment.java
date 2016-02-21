@@ -24,6 +24,13 @@ public class RoadSegment {
 	 */
 	Intersection intersects[];
 
+	/**
+	 * constructs a RoadSegment
+	 *
+	 * @param startpoint
+	 * @param endpoint
+	 * @param roadName
+	 */
 	public RoadSegment(Point2D startpoint, Point2D endpoint, String roadName) {
 		this.ends = new Point2D[2];
 		this.ends[0] = startpoint;
@@ -34,6 +41,25 @@ public class RoadSegment {
 		this.speedLimit = RoadSegment.DEFAULT_SPEEDLIMIT;
 		this.containingRoadName = roadName;
 	}
+	
+	/**
+	 * constructs a RoadSegment
+	 *
+	 * @param startpoint
+	 * @param endpoint
+	 * @param roadName
+	 * @param speedLimit 
+	 */
+	public RoadSegment(Point2D startpoint, Point2D endpoint, String roadName, int speedLimit) {
+		this.ends = new Point2D[2];
+		this.ends[0] = startpoint;
+		this.ends[1] = endpoint;
+		this.intersects = new Intersection[2];
+		this.intersects[0] = null;
+		this.intersects[1] = null;
+		this.speedLimit = speedLimit;
+		this.containingRoadName = roadName;
+	}
 
 	/**
 	 * Returns the value of the field called 'speedLimit'.
@@ -41,7 +67,7 @@ public class RoadSegment {
 	 * @return Returns the speedLimit.
 	 */
 	public int getSpeedLimit() {
-		return speedLimit;
+		return this.speedLimit;
 	}
 
 	/**
@@ -70,6 +96,9 @@ public class RoadSegment {
 		return out;
 	}
 
+	/**
+	 * @return returns the name of the road that this segment is a part of
+	 */
 	public String getContainingRoadName() {
 		return this.containingRoadName;
 	}

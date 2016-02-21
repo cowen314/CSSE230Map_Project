@@ -19,6 +19,7 @@ public class Intersection extends MapNode {
 	public static final double DIAMETER = 5;
 	private boolean roadEndMarker; //set true if this is the end of a road
 	private ArrayList<Restaurant> restaurants;
+	private int meanStopTimeSeconds;
 	
 	/**
 	 * partial intersection constructor
@@ -30,6 +31,7 @@ public class Intersection extends MapNode {
 		super(name,location);
 		this.restaurants = new ArrayList<Restaurant>();
 		this.roadEndMarker = false;
+		this.meanStopTimeSeconds = 30;
 	}
 
 	/**
@@ -46,6 +48,7 @@ public class Intersection extends MapNode {
 			RoadSegment rs3, RoadSegment rs4, Point2D location) {
 		super(name,rs1,rs2,rs3,rs4,location);
 		this.restaurants = new ArrayList<Restaurant>();
+		this.meanStopTimeSeconds = 30;
 	}
 	
 	/**

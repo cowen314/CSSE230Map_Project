@@ -45,14 +45,14 @@ public class MapGraph {
 	 * @return true if a road is successfully added, false otherwise
 	 */
 	public boolean addRoad(String newRoadName, Point2D startpoint,
-			Point2D endpoint) {
+			Point2D endpoint, int speedLimit) {
 		if (this.roadsTable.containsKey(newRoadName)) {
 			System.out.println("Attempted to add duplicate road");
 			return false;
 		}
 
 		// make an entry in the table for the new road
-		RoadList newRoad = new RoadList(newRoadName, startpoint, endpoint);
+		RoadList newRoad = new RoadList(newRoadName, startpoint, endpoint, speedLimit);
 
 		// intersections handling
 		Point2D lastEndpoint = startpoint;
@@ -65,9 +65,12 @@ public class MapGraph {
 			if (name != newRoadName) {
 				// iterate over all road segments
 				for (int i = 0; i < this.roadsTable.get(name).size(); i++) {
-					intersectLoc = MapGraph.intersection(startpoint, endpoint,
-							this.roadsTable.get(name).get(i).intersects[0].location,
-							this.roadsTable.get(name).get(i).intersects[1].location);
+					intersectLoc = MapGraph
+							.intersection(
+									startpoint,
+									endpoint,
+									this.roadsTable.get(name).get(i).intersects[0].location,
+									this.roadsTable.get(name).get(i).intersects[1].location);
 					if (intersectLoc != null) {
 						// use road names to define keys for nodes
 						// THIS IS WHERE INTERSECTIONS ARE NAMED
@@ -78,7 +81,8 @@ public class MapGraph {
 								intersectionKeyName, intersectLoc);
 						this.intersectionTable.put(intersectionKeyName,
 								curIntersection);
-						//add to intersections tree so that it can be processed in order
+						// add to intersections tree so that it can be processed
+						// in order
 						intersections.add(new IntersectionNode(curIntersection,
 								this.roadsTable.get(name).get(i), startpoint));
 						break;
@@ -97,19 +101,20 @@ public class MapGraph {
 			IntersectionNode in = it.next();
 			// create the trailing segment
 			RoadSegment trailingRoad = new RoadSegment(
-					lastIntersection.location, in.i.location, newRoadName);
+					lastIntersection.location, in.i.location, newRoadName, newRoad.getSpeedLimit());
 			newRoad.add(trailingRoad);
-			
-			//here are the connections and pointer deletion (four actions in total):
+
+			// here are the connections and pointer deletion (four actions in
+			// total):
 			lastIntersection.neighborRoads.add(trailingRoad);
 			trailingRoad.intersects[0] = lastIntersection;
 			trailingRoad.intersects[1] = in.i;
 			in.i.neighborRoads.add(trailingRoad);
 
 			// handle cross roads
-			//completely tie in RS2
-			RoadSegment RS2 = new RoadSegment(in.i.location, in.RS.intersects[0].location,
-					in.RS.getContainingRoadName());
+			// completely tie in RS2
+			RoadSegment RS2 = new RoadSegment(in.i.location,
+					in.RS.intersects[0].location, in.RS.getContainingRoadName(), in.RS.getSpeedLimit());
 			this.roadsTable.get(RS2.getContainingRoadName()).add(RS2);
 			RS2.intersects[1] = in.RS.intersects[1];
 			RS2.intersects[0] = in.i;
@@ -118,31 +123,31 @@ public class MapGraph {
 			in.RS.intersects[1].neighborRoads.remove(in.RS);
 			in.RS.intersects[1] = in.i;
 			in.i.neighborRoads.add(in.RS);
-			
-			
-//			this.roadsTable.get(RS2.getContainingRoadName()).add(RS2);
-//			RS2.intersects[0] = in.i;
-//			RS2.intersects[1] = in.RS.intersects[1];
-//			in.RS.intersects[0] = lastIntersection;
-//			in.RS.intersects[1] = in.i;
-//			in.i.neighborRoads.addLast(in.RS);
-//			in.i.neighborRoads.addLast(RS2);
-//			//Il.neighborRoads.addLast(RS2);
-			
+
+			// this.roadsTable.get(RS2.getContainingRoadName()).add(RS2);
+			// RS2.intersects[0] = in.i;
+			// RS2.intersects[1] = in.RS.intersects[1];
+			// in.RS.intersects[0] = lastIntersection;
+			// in.RS.intersects[1] = in.i;
+			// in.i.neighborRoads.addLast(in.RS);
+			// in.i.neighborRoads.addLast(RS2);
+			// //Il.neighborRoads.addLast(RS2);
+
 			lastIntersection = in.i;
 			lastEndpoint = in.i.location;
 		}
 
-//		// make the last road segment
+		// // make the last road segment
 		RoadSegment lastSegment = new RoadSegment(lastEndpoint, endpoint,
-				newRoadName);
+				newRoadName, newRoad.getSpeedLimit());
 		lastSegment.intersects[0] = lastIntersection;
 		lastIntersection.neighborRoads.add(lastSegment);
 		// TODO: making the end intersection null might cause problems in the
 		// case of 3-ways
 		lastIntersection = new Intersection("End of " + newRoadName, endpoint);
 		lastIntersection.setRoadEndMarker();
-		this.intersectionTable.put(lastIntersection.lookupName,lastIntersection);
+		this.intersectionTable.put(lastIntersection.lookupName,
+				lastIntersection);
 		lastSegment.intersects[1] = lastIntersection;
 		newRoad.add(lastSegment);
 
@@ -224,10 +229,6 @@ public class MapGraph {
 	 * Adds a restaurant to the specified intersection location TODO: consider
 	 * adding location parameters to this
 	 * 
-	 * Garrett is right about this; it would be better to calculate the closest
-	 * intersection on the fly rather than having to specify it ahead of time.
-	 * So, that's what we'll do.
-	 * 
 	 * @param restaurant
 	 * 
 	 * @param intersectionName
@@ -273,6 +274,9 @@ public class MapGraph {
 		return closestIntersection;
 	}
 
+	/**
+	 * @return a collection of all intersections
+	 */
 	public Collection<Intersection> getIntersections() {
 		return this.intersectionTable.values();
 	}
@@ -307,38 +311,13 @@ public class MapGraph {
 	}
 
 	/**
+	 * A* used to find shortest path
+	 * 
 	 * @return a LinkedList containing the road segments of the path that gives
-	 *         the shortest time
+	 *         the shortest time TODO: implement this
 	 */
-	public LinkedList<Intersection> shortestPath_Time(Intersection startPoint,
+	public LinkedList<Intersection> shortestPath_distance(Intersection startPoint,
 			Intersection endPoint) {
-		return null;
-	}
-
-	/**
-	 * Reconstructs path using the
-	 * 
-	 * @param current
-	 * @param Came_From
-	 * 
-	 * @return the shortest path
-	 */
-	private LinkedList<Intersection> reconstructPath(AStarElement X) {
-		LinkedList<Intersection> path = new LinkedList<Intersection>();
-		path.add(X.element);
-		while (X.parent != null) {
-			path.addFirst(X.parent.element);
-			X = X.parent;
-		}
-		return path;
-	}
-
-	/**
-	 * @return a LinkedList containing the road segments of the path that gives
-	 *         the shortest distance
-	 */
-	public LinkedList<Intersection> shortestPath_distance(
-			Intersection startPoint, Intersection endPoint) {
 		// Initialize stuff
 		PriorityQueue<AStarElement> openSet = new PriorityQueue<AStarElement>();
 		AStarElement startElement = new AStarElement(startPoint);
@@ -371,6 +350,72 @@ public class MapGraph {
 				temp.parent = X;
 				openSet.add(temp);
 
+			}
+		}
+		// if we reach this point, no route exists, and null is returned
+		return null;
+	}
+
+	/**
+	 * Reconstructs path using parent pointers
+	 * 
+	 * @param current
+	 * @param Came_From
+	 * 
+	 * @return the shortest path
+	 */
+	private LinkedList<Intersection> reconstructPath(AStarElement X) {
+		LinkedList<Intersection> path = new LinkedList<Intersection>();
+		path.add(X.element);
+		while (X.parent != null) {
+			path.addFirst(X.parent.element);
+			X = X.parent;
+		}
+		return path;
+	}
+
+	/**
+	 * A* used to find shortest path.
+	 * 
+	 * @return a LinkedList containing the road segments of the path that gives
+	 *         the shortest distance
+	 */
+	public LinkedList<Intersection> shortestPath_time(
+			Intersection startPoint, Intersection endPoint) {
+		// Initialize stuff
+		PriorityQueue<AStarElement> openSet = new PriorityQueue<AStarElement>();
+		AStarElement startElement = new AStarElement(startPoint);
+		startElement.f = startPoint.location.distance(endPoint.location)
+				/ ((double) EaglesBeard.getMaxSpeedLimit());
+		openSet.add(startElement);
+
+		// main loop
+		while (!openSet.isEmpty()) {
+			AStarElement X = openSet.poll();
+			if (X.element == endPoint)
+				return reconstructPath(X);
+			// closedSet.add(X);
+			// openSetMap.remove(X.element);
+			Intersection i;
+			for (RoadSegment roadSegment : X.element.neighborRoads) {
+				// we don't know which of the intersections in intersects[] that
+				// X.element is
+				// assign neighbor to the end that isn't X.element
+				if (roadSegment.intersects[0] == X.element)
+					i = roadSegment.intersects[1];
+				else
+					i = roadSegment.intersects[0];
+
+				if (i.endMarker() == true)
+					continue;
+
+				AStarElement temp = new AStarElement(i);
+				temp.g = X.g + roadSegment.length()
+						/ ((double) roadSegment.getSpeedLimit());
+				temp.f = temp.g + i.location.distance(endPoint.location)
+						/ ((double) EaglesBeard.getMaxSpeedLimit());
+				temp.parent = X;
+				openSet.add(temp);
 			}
 		}
 		// if we reach this point, no route exists, and null is returned

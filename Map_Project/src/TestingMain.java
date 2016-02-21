@@ -38,12 +38,12 @@ public class TestingMain {
 //				new Point2D.Double(150, 400));
 		// be sure to test three way intersection
 		
-		mapGraph.addRoad("Road 1", new Point2D.Double(10, 10), new Point2D.Double(99, 10));
-		mapGraph.addRoad("Road 2", new Point2D.Double(10, 10), new Point2D.Double(10, 99));
-		mapGraph.addRoad("Road 3", new Point2D.Double(99, 99), new Point2D.Double(10, 99));
-		mapGraph.addRoad("Road 4", new Point2D.Double(99, 99), new Point2D.Double(99, 10));
+		mapGraph.addRoad("Road 1", new Point2D.Double(10, 10), new Point2D.Double(99, 10),35);
+		mapGraph.addRoad("Road 2", new Point2D.Double(10, 10), new Point2D.Double(10, 99),35);
+		mapGraph.addRoad("Road 3", new Point2D.Double(99, 99), new Point2D.Double(10, 99),35);
+		mapGraph.addRoad("Road 4", new Point2D.Double(99, 99), new Point2D.Double(99, 10),35);
 		mapGraph.addRoad("Slanted road", new Point2D.Double(20, 0),
-				new Point2D.Double(80, 100));
+				new Point2D.Double(80, 100),35);
 		LinkedList<Intersection> shortestPath = mapGraph.shortestPath_distance(
 				mapGraph.getIntersectionByName("Road 1 + Road 2"),
 				mapGraph.getIntersectionByName("Road 3 + Slanted road"));

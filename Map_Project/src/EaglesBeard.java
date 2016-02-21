@@ -19,6 +19,7 @@ public final class EaglesBeard {
 	private static TripPlanner tripPlanner;
 	private SearchPanel searchPanel;
 	private final int REPAINT_INTERVAL_MS = 250;
+	private static final int MAX_SPEED_LIMIT = 70;
 
 	/**
 	 * The code in this constructor brings up the entire system
@@ -82,67 +83,77 @@ public final class EaglesBeard {
 		return EaglesBeard.tripPlanner;
 	}
 	
+	/**
+	 * @return Max speed limit
+	 */
+	public static int getMaxSpeedLimit(){
+		return MAX_SPEED_LIMIT;
+	}
+	
 	
 
 	private static void addRoads(MapGraph mapGraph) {
 		mapGraph.addRoad("3rd Street", new Point2D.Double(OFFSET + 80,
-				OFFSET + 75), new Point2D.Double(OFFSET + 80, OFFSET + 500));
+				OFFSET + 75), new Point2D.Double(OFFSET + 80, OFFSET + 500),45);
 
 		mapGraph.addRoad("Fort Harrison Rd.", new Point2D.Double(OFFSET + 100,
-				OFFSET + 20), new Point2D.Double(OFFSET + 265, OFFSET + 20));
+				OFFSET + 20), new Point2D.Double(OFFSET + 265, OFFSET + 20),35);
 
 		mapGraph.addRoad("Wabash Ave.", new Point2D.Double(OFFSET + 80,
-				OFFSET + 225), new Point2D.Double(OFFSET + 500, OFFSET + 120));
+				OFFSET + 225), new Point2D.Double(OFFSET + 500, OFFSET + 120),40);
 
 		mapGraph.addRoad("Blakely Ave.", new Point2D.Double(OFFSET + 265,
-				OFFSET + 0), new Point2D.Double(OFFSET + 265, OFFSET + 394));
+				OFFSET + 0), new Point2D.Double(OFFSET + 265, OFFSET + 394),35);
+		
 		mapGraph.addRoad("Fruitridge Ave. After I-70", new Point2D.Double(
 				OFFSET + 266, OFFSET + 396), new Point2D.Double(OFFSET + 265,
-				OFFSET + 500));
+				OFFSET + 500),40);
 
 		mapGraph.addRoad("Interstate 70", new Point2D.Double(OFFSET + 80,
-				OFFSET + 395), new Point2D.Double(OFFSET + 450, OFFSET + 395));
+				OFFSET + 395), new Point2D.Double(OFFSET + 450, OFFSET + 395),70);
 
 		mapGraph.addRoad("US-40/State Rd. 46", new Point2D.Double(OFFSET + 355,
-				OFFSET + 150), new Point2D.Double(OFFSET + 355, OFFSET + 500));
+				OFFSET + 150), new Point2D.Double(OFFSET + 355, OFFSET + 500),55);
 
 		mapGraph.addRoad("Poplar St.", new Point2D.Double(OFFSET + 80,
-				OFFSET + 235), new Point2D.Double(OFFSET + 355, OFFSET + 235));
+				OFFSET + 235), new Point2D.Double(OFFSET + 355, OFFSET + 235),35);
 
 		mapGraph.addRoad("Ohio St.", new Point2D.Double(OFFSET + 80,
-				OFFSET + 230), new Point2D.Double(OFFSET + 265, OFFSET + 230));
+				OFFSET + 230), new Point2D.Double(OFFSET + 265, OFFSET + 230),35);
 
 		mapGraph.addRoad("Hulman St.", new Point2D.Double(OFFSET + 80,
-				OFFSET + 305), new Point2D.Double(OFFSET + 355, OFFSET + 305));
+				OFFSET + 305), new Point2D.Double(OFFSET + 355, OFFSET + 305),35);
 
 		mapGraph.addRoad("7th St.", new Point2D.Double(OFFSET + 105,
-				OFFSET + 150), new Point2D.Double(OFFSET + 105, OFFSET + 394));
+				OFFSET + 150), new Point2D.Double(OFFSET + 105, OFFSET + 394),30);
+		
 		mapGraph.addRoad("7th St. After I-70", new Point2D.Double(OFFSET + 106,
-				OFFSET + 396), new Point2D.Double(OFFSET + 105, OFFSET + 500));
+				OFFSET + 396), new Point2D.Double(OFFSET + 105, OFFSET + 500),35);
 
 		mapGraph.addRoad("Lafayette Ave.", new Point2D.Double(OFFSET + 105,
-				OFFSET + 150), new Point2D.Double(OFFSET + 180, OFFSET + 0));
+				OFFSET + 150), new Point2D.Double(OFFSET + 180, OFFSET + 0),35);
 
 		mapGraph.addRoad("13th St.", new Point2D.Double(OFFSET + 135,
-				OFFSET + 0), new Point2D.Double(OFFSET + 135, OFFSET + 340));
+				OFFSET + 0), new Point2D.Double(OFFSET + 135, OFFSET + 340),30);
 
 		mapGraph.addRoad("Erie Canal Rd.", new Point2D.Double(OFFSET + 150,
-				OFFSET + 394), new Point2D.Double(OFFSET + 135, OFFSET + 340));
+				OFFSET + 394), new Point2D.Double(OFFSET + 135, OFFSET + 340),35);
+		
 		mapGraph.addRoad("Erie Canal Rd. After I-70", new Point2D.Double(
 				OFFSET + 150, OFFSET + 396), new Point2D.Double(OFFSET + 185,
-				OFFSET + 500));
+				OFFSET + 500),35);
 
 		mapGraph.addRoad("Margaret Ave.", new Point2D.Double(OFFSET + 80,
-				OFFSET + 380), new Point2D.Double(OFFSET + 355, OFFSET + 380));
+				OFFSET + 380), new Point2D.Double(OFFSET + 355, OFFSET + 380),35);
 
 		mapGraph.addRoad("US-41", new Point2D.Double(OFFSET + 110, OFFSET + 0),
-				new Point2D.Double(OFFSET + 80, OFFSET + 75));
+				new Point2D.Double(OFFSET + 80, OFFSET + 75),55);
 
 		mapGraph.addRoad("Chamberlain Rd.", new Point2D.Double(OFFSET + 480,
-				OFFSET + 20), new Point2D.Double(OFFSET + 480, OFFSET + 235));
+				OFFSET + 20), new Point2D.Double(OFFSET + 480, OFFSET + 235),35);
 
 		mapGraph.addRoad("IN Rt 42", new Point2D.Double(OFFSET + 355,
-				OFFSET + 235), new Point2D.Double(OFFSET + 500, OFFSET + 234));
+				OFFSET + 235), new Point2D.Double(OFFSET + 500, OFFSET + 234),55);
 	}
 
 	private static void addRestaurants(MapGraph mg) {
