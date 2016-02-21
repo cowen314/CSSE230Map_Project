@@ -66,7 +66,8 @@ public class RoadSegment {
 
 	@Override
 	public String toString() {
-		return this.containingRoadName;
+		String out = this.containingRoadName + " : " + this.intersects[0].lookupName + "--" +  this.intersects[1].lookupName;
+		return out;
 	}
 
 	public String getContainingRoadName() {

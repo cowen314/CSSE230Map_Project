@@ -1,5 +1,6 @@
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -28,7 +29,8 @@ public abstract class MapNode {
 	 * A linked list of all neighboring roads
 	 * i.e. all roads leading to/away from this node
 	 */
-	protected LinkedList<RoadSegment> neighborRoads;
+	//protected LinkedList<RoadSegment> neighborRoads;
+	protected ArrayList<RoadSegment> neighborRoads;
 
 	// this will be the icon displayed on the map
 	/**
@@ -43,7 +45,7 @@ public abstract class MapNode {
 	 */
 	public MapNode(String name,Point2D location) {
 		this.lookupName = name;
-		this.neighborRoads = new LinkedList<RoadSegment>();
+		this.neighborRoads = new ArrayList<RoadSegment>();
 		this.location = location;
 	}
 	
@@ -61,11 +63,11 @@ public abstract class MapNode {
 	public MapNode(String name, RoadSegment rs1, RoadSegment rs2,
 			RoadSegment rs3, RoadSegment rs4, Point2D location) {
 		this.lookupName = name;
-		this.neighborRoads = new LinkedList<RoadSegment>();
-		this.neighborRoads.addLast(rs1);
-		this.neighborRoads.addLast(rs2);
-		this.neighborRoads.addLast(rs3);
-		this.neighborRoads.addLast(rs4);
+		this.neighborRoads = new ArrayList<RoadSegment>();
+		this.neighborRoads.add(rs1);
+		this.neighborRoads.add(rs2);
+		this.neighborRoads.add(rs3);
+		this.neighborRoads.add(rs4);
 		this.location = location;
 	}
 

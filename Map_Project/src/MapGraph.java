@@ -66,8 +66,8 @@ public class MapGraph {
 				// iterate over all road segments
 				for (int i = 0; i < this.roadsTable.get(name).size(); i++) {
 					intersectLoc = MapGraph.intersection(startpoint, endpoint,
-							this.roadsTable.get(name).get(i).ends[0],
-							this.roadsTable.get(name).get(i).ends[1]);
+							this.roadsTable.get(name).get(i).intersects[0].location,
+							this.roadsTable.get(name).get(i).intersects[1].location);
 					if (intersectLoc != null) {
 						// use road names to define keys for nodes
 						// THIS IS WHERE INTERSECTIONS ARE NAMED
@@ -104,7 +104,7 @@ public class MapGraph {
 			lastIntersection.neighborRoads.add(trailingRoad);
 			trailingRoad.intersects[0] = lastIntersection;
 			trailingRoad.intersects[1] = in.i;
-			in.i.neighborRoads.addLast(trailingRoad);
+			in.i.neighborRoads.add(trailingRoad);
 
 			// handle cross roads
 			//completely tie in RS2
