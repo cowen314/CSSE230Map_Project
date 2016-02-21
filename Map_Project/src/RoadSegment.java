@@ -55,12 +55,22 @@ public class RoadSegment {
 	}
 
 	/**
-	 * TODO Put here a description of what this method does.
-	 * 
-	 * @return
+	 * @return the straight line distance from the intersections that mark the
+	 *         ends of this road segment
 	 */
 	public double length() {
-		return this.ends[0].distance(this.ends[1]);
+		// return this.ends[0].distance(this.ends[1]);
+		return this.intersects[0].getLocation().distance(
+				this.intersects[1].location);
+	}
+
+	@Override
+	public String toString() {
+		return this.containingRoadName;
+	}
+
+	public String getContainingRoadName() {
+		return this.containingRoadName;
 	}
 
 }

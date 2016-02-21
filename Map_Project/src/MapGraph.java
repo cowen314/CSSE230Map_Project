@@ -1,9 +1,11 @@
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.TreeSet;
 
 import math.geom2d.Vector2D;
 
@@ -24,7 +26,7 @@ public class MapGraph {
 
 	// restaurants
 	private HashMap<String, Restaurant> restaurantsTable;
-	
+
 	private final int MAXIMUM_SPEED_LIMIT = 70;
 
 	/**
@@ -50,33 +52,23 @@ public class MapGraph {
 		}
 
 		// make an entry in the table for the new road
-		RoadList newRoad = new RoadList();
-		newRoad.changeName(newRoadName);
+		RoadList newRoad = new RoadList(newRoadName, startpoint, endpoint);
 
 		// intersections handling
 		Point2D lastEndpoint = startpoint;
-		Intersection lastIntersection = null;
-		RoadSegment trailingSegment = null;
 		Point2D intersectLoc;
 		Set<String> roadNames = this.roadsTable.keySet();
-		/*
-		 * iterate over all road segments, checking for points at which the
-		 * roads cross over. At these crossover points, an intersection is
-		 * added.
-		 */
+		TreeSet<IntersectionNode> intersections = new TreeSet<IntersectionNode>();
+
+		// Iterate over all roads
 		for (String name : roadNames) {
 			if (name != newRoadName) {
-				// check for intersection
+				// iterate over all road segments
 				for (int i = 0; i < this.roadsTable.get(name).size(); i++) {
 					intersectLoc = MapGraph.intersection(startpoint, endpoint,
 							this.roadsTable.get(name).get(i).ends[0],
 							this.roadsTable.get(name).get(i).ends[1]);
 					if (intersectLoc != null) {
-						// add an intersection object to the intersections
-						// HashMap
-						// //make sure to point the intersection to the correct
-						// roads
-
 						// use road names to define keys for nodes
 						// THIS IS WHERE INTERSECTIONS ARE NAMED
 						String intersectionKeyName = name
@@ -86,56 +78,102 @@ public class MapGraph {
 								intersectionKeyName, intersectLoc);
 						this.intersectionTable.put(intersectionKeyName,
 								curIntersection);
-
-						// add a new segment to newRoad
-						trailingSegment = new RoadSegment(lastEndpoint,
-								intersectLoc, newRoadName);
-						newRoad.add(trailingSegment);
-						trailingSegment.intersects[0] = lastIntersection;
-						trailingSegment.intersects[1] = curIntersection;
-
-						// split this.roads.get(name).get(i) (the existing road
-						// segment)
-						RoadSegment toSplit = this.roadsTable.get(name).get(i);
-						RoadSegment newPortion = new RoadSegment(intersectLoc,
-								toSplit.ends[1], name);
-						newPortion.intersects[0] = curIntersection;
-						newPortion.intersects[1] = toSplit.intersects[1];
-						toSplit.ends[1] = intersectLoc;
-						toSplit.intersects[1] = curIntersection;
-						// TODO: the nature of this insertion makes me think a
-						// LinkedList would be better underpinning of RoadList
-						this.roadsTable.get(name).add(i + 1, newPortion);
-
-						curIntersection.neighborRoads.add(trailingSegment);
-						curIntersection.neighborRoads.add(toSplit);
-						curIntersection.neighborRoads.add(newPortion);
-						if (lastIntersection != null)
-							lastIntersection.neighborRoads.add(trailingSegment);
-
-						// update info for the last intersection
-						lastEndpoint = intersectLoc;
-						lastIntersection = curIntersection;
+						//add to intersections tree so that it can be processed in order
+						intersections.add(new IntersectionNode(curIntersection,
+								this.roadsTable.get(name).get(i), startpoint));
 						break;
 					}
 				}
 			}
 		}
 
-		// make the last road segment
+		Intersection lastIntersection = new Intersection("Start of "
+				+ newRoadName, startpoint);
+		lastIntersection.setRoadEndMarker();
+		this.intersectionTable.put("Start of " + newRoadName, lastIntersection);
+
+		Iterator<IntersectionNode> it = intersections.iterator();
+		while (it.hasNext()) {
+			IntersectionNode in = it.next();
+			// create the trailing segment
+			RoadSegment trailingRoad = new RoadSegment(
+					lastIntersection.location, in.i.location, newRoadName);
+			newRoad.add(trailingRoad);
+			
+			//here are the connections and pointer deletion (four actions in total):
+			lastIntersection.neighborRoads.add(trailingRoad);
+			trailingRoad.intersects[0] = lastIntersection;
+			trailingRoad.intersects[1] = in.i;
+			in.i.neighborRoads.addLast(trailingRoad);
+
+			// handle cross roads
+			//completely tie in RS2
+			RoadSegment RS2 = new RoadSegment(in.i.location, in.RS.intersects[0].location,
+					in.RS.getContainingRoadName());
+			this.roadsTable.get(RS2.getContainingRoadName()).add(RS2);
+			RS2.intersects[1] = in.RS.intersects[1];
+			RS2.intersects[0] = in.i;
+			in.i.neighborRoads.add(RS2);
+			in.RS.intersects[1].neighborRoads.add(RS2);
+			in.RS.intersects[1].neighborRoads.remove(in.RS);
+			in.RS.intersects[1] = in.i;
+			in.i.neighborRoads.add(in.RS);
+			
+			
+//			this.roadsTable.get(RS2.getContainingRoadName()).add(RS2);
+//			RS2.intersects[0] = in.i;
+//			RS2.intersects[1] = in.RS.intersects[1];
+//			in.RS.intersects[0] = lastIntersection;
+//			in.RS.intersects[1] = in.i;
+//			in.i.neighborRoads.addLast(in.RS);
+//			in.i.neighborRoads.addLast(RS2);
+//			//Il.neighborRoads.addLast(RS2);
+			
+			lastIntersection = in.i;
+			lastEndpoint = in.i.location;
+		}
+
+//		// make the last road segment
 		RoadSegment lastSegment = new RoadSegment(lastEndpoint, endpoint,
 				newRoadName);
 		lastSegment.intersects[0] = lastIntersection;
-		if (lastIntersection != null)
-			lastIntersection.neighborRoads.add(lastSegment);
+		lastIntersection.neighborRoads.add(lastSegment);
 		// TODO: making the end intersection null might cause problems in the
 		// case of 3-ways
-		lastSegment.intersects[1] = null;
+		lastIntersection = new Intersection("End of " + newRoadName, endpoint);
+		lastIntersection.setRoadEndMarker();
+		this.intersectionTable.put(lastIntersection.lookupName,lastIntersection);
+		lastSegment.intersects[1] = lastIntersection;
 		newRoad.add(lastSegment);
 
 		// and finally, put the new road in the roads HashMap
 		this.roadsTable.put(newRoadName, newRoad);
 		return true;
+	}
+
+	private class IntersectionNode implements Comparable<IntersectionNode> {
+
+		Intersection i;
+		RoadSegment RS;
+		Point2D refPoint;
+
+		public IntersectionNode(Intersection i, RoadSegment RS, Point2D refPoint) {
+			this.i = i;
+			this.RS = RS;
+			this.refPoint = refPoint;
+		}
+
+		@Override
+		public int compareTo(IntersectionNode arg0) {
+			double distThis = this.i.location.distance(this.refPoint);
+			double distThat = arg0.i.location.distance(this.refPoint);
+			if (distThis < distThat)
+				return 1;
+			if (distThis > distThat)
+				return -1;
+			return 0;
+		}
+
 	}
 
 	/**
@@ -235,7 +273,6 @@ public class MapGraph {
 		return closestIntersection;
 	}
 
-
 	public Collection<Intersection> getIntersections() {
 		return this.intersectionTable.values();
 	}
@@ -325,7 +362,7 @@ public class MapGraph {
 				else
 					i = roadSegment.intersects[0];
 
-				if (i == null)
+				if (i.endMarker() == true)
 					continue;
 
 				AStarElement temp = new AStarElement(i);
@@ -366,9 +403,9 @@ public class MapGraph {
 
 		@Override
 		public int compareTo(AStarElement arg0) {
-			if (f > arg0.f)
+			if (this.f > arg0.f)
 				return 1;
-			if (f < arg0.f)
+			if (this.f < arg0.f)
 				return -1;
 			return 0;
 		}

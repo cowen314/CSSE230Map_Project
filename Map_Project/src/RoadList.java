@@ -10,11 +10,21 @@ import java.util.ArrayList;
  */
 public class RoadList extends ArrayList<RoadSegment> {
 	private String roadName;
+	private Point2D start;
+	private Point2D end;
+	
 	/**
 	 * the default color of roads
 	 */
 	public static final Color color = Color.black;
 
+	public RoadList(String name, Point2D start, Point2D end){
+		this.roadName = name;
+		this.start = start;
+		this.end = end;
+	}
+	
+	
 	public void changeName(String name) {
 		this.roadName = name;
 	}
@@ -24,8 +34,7 @@ public class RoadList extends ArrayList<RoadSegment> {
 	}
 
 	public Point2D[] getEndPoints() {
-		Point2D[] out = { this.get(0).ends[0],
-				this.get(this.size() - 1).ends[1] };
+		Point2D[] out = { this.start, this.end };
 		return out;
 	}
 	

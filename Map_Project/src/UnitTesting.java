@@ -25,6 +25,15 @@ public class UnitTesting {
 	}
 	
 	@Test
+	public void testaddRoad_simple(){
+		MapGraph mapGraph = new MapGraph();
+		mapGraph.addRoad("Road 1", new Point2D.Double(5, 0), new Point2D.Double(5, 10));
+		mapGraph.addRoad("Road 2", new Point2D.Double(0, 5), new Point2D.Double(10, 5));
+		mapGraph.addRoad("Road 3", new Point2D.Double(0, 7), new Point2D.Double(10, 7));
+		System.out.println(mapGraph.getIntersections());
+	}
+	
+	@Test
 	public void testAStar_distance_simple() {
 		// this will also test the potential road ending problem
 		MapGraph mapGraph = new MapGraph();

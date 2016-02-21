@@ -17,7 +17,7 @@ public class Intersection extends MapNode {
 	 * default diameter of intersections
 	 */
 	public static final double DIAMETER = 5;
-	
+	private boolean roadEndMarker; //set true if this is the end of a road
 	private ArrayList<Restaurant> restaurants;
 	
 	/**
@@ -29,6 +29,7 @@ public class Intersection extends MapNode {
 	public Intersection(String name, Point2D location) {
 		super(name,location);
 		this.restaurants = new ArrayList<Restaurant>();
+		this.roadEndMarker = false;
 	}
 
 	/**
@@ -59,6 +60,14 @@ public class Intersection extends MapNode {
 	@Override
 	public String toString() {
 		return this.lookupName;
+	}
+	
+	public void setRoadEndMarker(){
+		this.roadEndMarker = true;
+	}
+	
+	public boolean endMarker(){
+		return this.roadEndMarker;
 	}
 
 }
