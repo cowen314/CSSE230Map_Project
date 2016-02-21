@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
@@ -16,6 +17,12 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * The top level (GUI) trip planner class
+ *
+ * @author owencb.
+ *         Created Feb 21, 2016.
+ */
 public class TripPlanner extends JPanel {
 
 	private Restaurant[] restaurantList;
@@ -24,7 +31,13 @@ public class TripPlanner extends JPanel {
 	private JComboBox<String> endComboBox;
 	private TripPlannerFunctionality tpFunct;
 	private LinkedList<Intersection> currentRoute;
+	private ArrayList<RestaurantCheckBox> checkboxes;
 
+	/**
+	 * Constucts GUI trip planner
+	 *
+	 * @param mg
+	 */
 	public TripPlanner(MapGraph mg) {
 		super();
 		this.restaurantList = mg.getRestaurants().toArray(new Restaurant[0]);
@@ -33,9 +46,12 @@ public class TripPlanner extends JPanel {
 		this.buildTripPlannerGUI();
 		this.comboBoxesCreated = 0;
 		this.tpFunct = new TripPlannerFunctionality(this);
-
+		//this.checkboxes = new ArrayList<RestaurantCheckBox>();
 	}
 	
+	/**
+	 * @return the restaurants list
+	 */
 	public Restaurant[] getRestaurants(){
 		return this.restaurantList;
 	}
@@ -116,9 +132,8 @@ public class TripPlanner extends JPanel {
 			restaurantNames[counter] = r.getName();
 			counter++;
 		}
-		restaurantNames[counter] = "Rose-Hulman Institute of Technology";
+		//restaurantNames[counter] = "Rose-Hulman Institute of Technology";
 
-		// TODO: clean this up
 		JComboBox<String> comboBox = new JComboBox<String>(restaurantNames);
 		comboBox.setSelectedIndex(counter);
 		if (this.comboBoxesCreated == 0) {
@@ -177,21 +192,39 @@ public class TripPlanner extends JPanel {
 	private JPanel createOptionalDestinationPanel() {
 		JPanel toReturn = new JPanel();
 		int numRows = (this.restaurantList.length / 2);
+		this.checkboxes = new ArrayList<RestaurantCheckBox>();
 		toReturn.setLayout(new GridLayout(numRows, 1, 10, 0));
 		for (Restaurant r : this.restaurantList) {
-			JCheckBox checkBox = new JCheckBox(r.getName());
+			RestaurantCheckBox checkBox = new RestaurantCheckBox(r);
+			this.checkboxes.add(checkBox);
 			toReturn.add(checkBox);
 		}
-		toReturn.add(new JCheckBox("Rose-Hulman"));
+		//toReturn.add(new JCheckBox("Rose-Hulman"));
 		toReturn.setAlignmentX(CENTER_ALIGNMENT);
 		return toReturn;
+	}
+	
+	private class RestaurantCheckBox extends JCheckBox {
+		private Restaurant restaurant;
+		/**
+		 * constructs check box with attached restaurant name
+		 */
+		public RestaurantCheckBox(Restaurant restaurant) {
+			super(restaurant.getName());
+			this.restaurant = restaurant;
+		}
 	}
 
 	private void addShortListener(JButton shortestPathButton) {
 		shortestPathButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				ArrayList<Restaurant> rests = new ArrayList<Restaurant>();
+				for(RestaurantCheckBox rcb : TripPlanner.this.checkboxes) {
+					if(rcb.isSelected())
+						rests.add(rcb.restaurant);
+				}
 				System.out.println("Calculating Shortest Trip");
-				TripPlanner.this.currentRoute = TripPlanner.this.tpFunct.shortestDistance();
+				TripPlanner.this.currentRoute = TripPlanner.this.tpFunct.shortestDistance(rests);
 				System.out.println(TripPlanner.this.currentRoute);
 			}
 		});
@@ -200,8 +233,15 @@ public class TripPlanner extends JPanel {
 	private void addFastListener(JButton fastestPathButton) {
 		fastestPathButton.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
+				//ADDED THIS
+				ArrayList<Restaurant> rests = new ArrayList<Restaurant>();
+				for(RestaurantCheckBox rcb : TripPlanner.this.checkboxes) {
+					if(rcb.isSelected())
+						rests.add(rcb.restaurant);
+				}
+				
 				System.out.println("Calculating Fastest Trip");
-				TripPlanner.this.currentRoute = TripPlanner.this.tpFunct.shortestTime();
+				TripPlanner.this.currentRoute = TripPlanner.this.tpFunct.shortestTime(rests);
 				System.out.println(TripPlanner.this.currentRoute);
 			}
 		});
@@ -213,4 +253,15 @@ public class TripPlanner extends JPanel {
 	public LinkedList<Intersection> getCurrentRoute() {
 		return this.currentRoute;
 	}
+	
+	public boolean isOnRoute(Restaurant r){
+		if(this.checkboxes==null)
+			return false;
+		for(RestaurantCheckBox rcb : this.checkboxes){
+			if(rcb.isSelected()&&r==rcb.restaurant)
+				return true;
+		}
+		return false;
+	}
+	
 }

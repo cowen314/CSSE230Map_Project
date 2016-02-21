@@ -265,10 +265,12 @@ public class MapGraph {
 		double distance;
 		Intersection closestIntersection = null;
 		for (Intersection intersection : allIntersections) {
-			distance = intersection.getLocation().distance(location);
-			if (minDistance == -1 || distance < minDistance) {
-				minDistance = distance;
-				closestIntersection = intersection;
+			if(!intersection.endMarker()){
+				distance = intersection.getLocation().distance(location);
+				if (minDistance == -1 || distance < minDistance) {
+					minDistance = distance;
+					closestIntersection = intersection;
+				}
 			}
 		}
 		return closestIntersection;

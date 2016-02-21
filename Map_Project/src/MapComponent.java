@@ -126,6 +126,8 @@ public class MapComponent extends JComponent {
 			g2.setColor(Color.GREEN);
 		else if(restaurant==EaglesBeard.getTripPlanner().getEnd())
 			g2.setColor(Color.RED);
+		else if(EaglesBeard.getTripPlanner().isOnRoute(restaurant))
+			g2.setColor(Color.yellow);
 		else
 			g2.setColor(Restaurant.color);
 		g2.fill(marker);
